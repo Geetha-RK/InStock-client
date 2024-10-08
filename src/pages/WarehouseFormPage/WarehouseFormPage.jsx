@@ -1,9 +1,13 @@
 import "./WarehouseFormPage.scss";
+import { useNavigate } from "../../hooks/useNavigate";
 import MainCard from "../../components/MainCard/MainCard";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
+import axios from "axios";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const initialValues = {
 	"warehouse_name": "",
@@ -11,7 +15,7 @@ const initialValues = {
 	city: "",
 	country: "",
 	"contact_name": "",
-	"contact_postion": "",
+	"contact_position": "",
 	"contact_phone": "",
 	"contact_email": ""
 };
@@ -19,16 +23,32 @@ const initialValues = {
 function WarehouseFormPage() {
 	const block = "warehouse-form-page"; // bem block name
 
+	const navigate = useNavigate();
+
 	const [values, setValues] = useState(initialValues);
 
+	/** Updates form state when user interacts with fields. */
 	function handleInputChange(ev) {
 		const { name, value } = ev.target;
 		setValues({ ...values, [name]: value });
 	}
 
+	/** Submits form data to API */
 	async function handleSubmit(ev) {
 		ev.preventDefault();
-		console.log(values);
+
+		try {
+			const request = axios.post(`${import.meta.env.VITE_API_URL}/api/warehouses`, values);
+			toast.promise(request, {
+				pending: "Submitting form...",
+				success: "Warehouse created!",
+				error: "Failed to create warehouse."
+			});
+			await request;
+			setTimeout(() => navigate("/warehouses"), 5000);
+		} catch (error) {
+			// do nothing
+		}
 	}
 
 	return (<MainCard className={block}>
@@ -122,6 +142,9 @@ function WarehouseFormPage() {
 				<Button>+ Add Warehouse</Button>
 			</div>
 		</form>
+		<span aria-live="assertive" aria-atomic="true" aria-relevant="additions text">
+			<ToastContainer/>
+		</span>
 	</MainCard>);
 }
 
