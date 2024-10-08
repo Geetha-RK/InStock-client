@@ -43,5 +43,13 @@ export function useAnnouncementSystem(mainWrapperRef, skipLinkRef) {
 		}
 	}, [location, setAnnouncement]);
 
-	return {announcement, setAnnouncement, refocusOnMain, userNavigated};
+	return {
+		announcement,
+		setAnnouncement,
+		refocusOnMain,
+		userNavigated,
+		get canGoBack(){
+			return navigationHasOccurred.current
+		}
+	};
 }

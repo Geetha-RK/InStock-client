@@ -35,13 +35,14 @@ function App() {
 		announcement,
 		setAnnouncement,
 		refocusOnMain,
-		userNavigated
+		userNavigated,
+		canGoBack
 	} = useAnnouncementSystem(mainWrapperRef, skipLinkRef);
 
 	return (<>
 		<a className="skip-to-main" href="#main" ref={skipLinkRef}>Skip to Main Content</a>
 
-		<AnnouncementContext.Provider value={{setAnnouncement, refocusOnMain, userNavigated}}>
+		<AnnouncementContext.Provider value={{setAnnouncement, refocusOnMain, userNavigated, canGoBack}}>
 
 			{/* Header component and other content that needs to be above the main content can go here */}
 
