@@ -1,20 +1,17 @@
+@use "styles/partials/global" as *;
+
 .skip-to-main {
 	&:focus {
 		position: fixed;
 		z-index: 10;
-		outline: 2px solid black;
-		padding: .5rem;
+		border-bottom-right-radius: $border-radius;
+		padding: $space-1 $space-2 $space-2 $space-1;
+		background: $c-instock-indigo;
+		color: $c-white;
 		cursor: pointer;
+		@extend %f-body-large;
 	}
 	&:not(:focus) {
-		// Hides an element visually, but not for screen readers.
-		// https://css-tricks.com/inclusively-hidden/
-		clip: rect(0 0 0 0);
-		clip-path: inset(50%);
-		height: 1px;
-		overflow: hidden;
-		position: absolute;
-		white-space: nowrap;
-		width: 1px;
+		@include screen-reader-only;
 	}
 }
