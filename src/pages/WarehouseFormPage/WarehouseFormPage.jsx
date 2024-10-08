@@ -1,12 +1,13 @@
-import Button from "../../components/Button/Button";
-import Input from "../../components/Input/Input";
-import PageHeader from "../../components/PageHeader/PageHeader";
 import "./WarehouseFormPage.scss";
+import MainCard from "../../components/MainCard/MainCard";
+import PageHeader from "../../components/PageHeader/PageHeader";
+import Input from "../../components/Input/Input";
+import Button from "../../components/Button/Button";
 
 function WarehouseFormPage() {
 	const block = "warehouse-form-page"; // bem block name
 
-	return (<section className={block}>
+	return (<MainCard className={block}>
 		<PageHeader hasBackButton={true}>Add New Warehouse</PageHeader>
 		<form className={`${block}__form`}>
 			<fieldset className={`${block}__form-section`}>
@@ -63,7 +64,7 @@ function WarehouseFormPage() {
 				<Button>+ Add Warehouse</Button>
 			</div>
 		</form>
-	</section>);
+	</MainCard>);
 }
 
 export default WarehouseFormPage;
