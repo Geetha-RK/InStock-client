@@ -1,11 +1,5 @@
+@use "../../styles/partials/mixins" as *;
+
 .sr-announcement {
-	// Hides an element visually, but not for screen readers.
-	// https://css-tricks.com/inclusively-hidden/
-	clip: rect(0 0 0 0);
-	clip-path: inset(50%);
-	height: 1px;
-	overflow: hidden;
-	position: absolute;
-	white-space: nowrap;
-	width: 1px;
+	@include screen-reader-only;
 }
