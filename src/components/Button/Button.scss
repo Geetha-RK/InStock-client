@@ -1,0 +1,43 @@
+@use "../../styles/partials/global" as *;
+
+.cta-button {
+	display: block;
+	width: 100%;
+	height: pxToRem(36);
+	border-radius: $border-radius;
+	border: 1px solid transparent;
+	padding: $space-1 $space-2;
+	@extend %f-button;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+
+	&--primary {
+		background: $c-instock-indigo;
+		color: $c-white;
+		&:hover {
+			background: $c-graphite;
+		}
+	}
+	&--secondary {
+		border-color: $c-cloud;
+		background: $c-white;
+		color: $c-slate;
+		&:hover {
+			border-color: $c-instock-indigo;
+			color: $c-instock-indigo;
+		}
+	}
+	&--delete {
+		background: $c-graphite;
+		color: $c-slate;
+		&:hover {
+			background: $c-graphite;
+		}
+	}
+
+	@include tablet {
+		width: fit-content;
+		height: pxToRem(38);
+	}
+}

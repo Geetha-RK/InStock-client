@@ -1,0 +1,52 @@
+@use "../../styles/partials/global" as *;
+
+.input {
+	display: block;
+	width: 100%;
+	min-width: pxToRem(184);
+
+	&__label {
+		@extend %f-label;
+		color: $c-instock-black;
+	}
+
+	&__field {
+		display: block;
+		margin-top: $space-0;
+		width: 100%;
+		border: 1px solid $c-cloud;
+		border-radius: $border-radius;
+		padding: $space-2;
+		background-color: $c-white;
+
+		&:not(textarea) {
+			height: pxToRem(36);
+		}
+		&::placeholder {
+			color: $c-slate;
+			opacity: 1;
+		}
+		&:focus {
+			outline: 1px solid $c-instock-indigo;
+			outline-offset: -1px;
+		}
+		&--invalid {
+			border-color: $c-red;
+		}
+	}
+	&__hidden {
+		@include screen-reader-only;
+	}
+	&__error {
+		padding-left: $space-2 + $space-0;
+		background: no-repeat center left / $space-2 url("../../assets/icons/error-24px.svg");
+		@extend %f-body-small;
+		color: $c-red;
+	}
+
+	@include tablet {
+		&__field:not(textarea) {
+			height: pxToRem(36);
+		}
+	}
+}

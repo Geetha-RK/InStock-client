@@ -1,0 +1,27 @@
+@use "../../styles/partials/global" as *;
+
+.icon-button {
+	margin: 0;
+	border: 1px solid transparent;
+	min-width: $space-3;
+	width: min-content;
+	padding: 0;
+	background: none;
+	cursor: pointer;
+
+	&__icon {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: scale-down;
+	}
+	&__text {
+		@extend %f-body-small;
+		line-height: normal;
+		font-weight: 600;
+		color: $c-instock-black;
+	}
+	&__hidden {
+		@include screen-reader-only;
+	}
+}

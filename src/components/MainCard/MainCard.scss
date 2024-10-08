@@ -1,0 +1,12 @@
+@use "../../styles/partials/global" as *;
+
+.card-layout {
+	margin-inline: $margin-mobile;
+	max-width: $max-content-width;
+	border-radius: 3px;
+	background: $c-white;
+	box-shadow: 0px 2px 5px 0px rgba($c-instock-black, .1);
+	@include tablet {
+		margin-inline: max(calc((100% - $max-content-width) / 2), $margin-tablet);
+	}
+}
