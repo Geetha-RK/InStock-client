@@ -1,0 +1,25 @@
+@use "../../styles/partials/global" as *;
+
+.warehouse-form-page {
+	&__form-section {
+		display: flex;
+		flex-direction: column;
+		gap: $space-2;
+		margin: 0;
+		border: 0;
+		padding: $space-3;
+		&:not(:last-child) {
+			border-bottom: 1px solid $c-cloud;
+		}
+	}
+	&__form-header {
+		margin-block: 0 $space-1;
+		@extend %f-sub-header;
+		color: $c-instock-black;
+	}
+	&__form-buttons {
+		padding: $space-3;
+		display: flex;
+		gap: $space-2;
+	}
+}
