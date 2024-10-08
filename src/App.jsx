@@ -25,6 +25,9 @@ If you do that, all page navigation will be announced to assistive technology
 automatically.
 */
 
+/** Provides access to the announcement system to `Link` components */
+export const AnnouncementContext = createContext(null);
+
 function App() {
 	const mainWrapperRef = useRef(null),
 		skipLinkRef = useRef(null);
@@ -74,6 +77,3 @@ function App() {
 }
 
 export default App;
-
-/** Provides access to the announcement system to `Link` components */
-export const AnnouncementContext = createContext(null);
