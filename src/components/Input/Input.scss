@@ -34,6 +34,15 @@
 			border-color: $c-red;
 		}
 	}
+	&__hidden {
+		@include screen-reader-only;
+	}
+	&__error {
+		padding-left: $space-2 + $space-0;
+		background: no-repeat center left / $space-2 url("../../assets/icons/error-24px.svg");
+		@extend %f-body-small;
+		color: $c-red;
+	}
 
 	@include tablet {
 		&__field:not(textarea) {
