@@ -3,7 +3,7 @@
 .input {
 	display: block;
 	width: 100%;
-	min-width: pxToRem(100px);
+	min-width: pxToRem(184);
 
 	&__label {
 		@extend %f-label;
@@ -32,6 +32,12 @@
 		}
 		&--invalid {
 			border-color: $c-red;
+		}
+	}
+
+	@include tablet {
+		&__field:not(textarea) {
+			height: pxToRem(36);
 		}
 	}
 }
