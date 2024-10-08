@@ -1,0 +1,37 @@
+@use "../../styles/partials/global" as *;
+
+.input {
+	display: block;
+	width: 100%;
+	min-width: pxToRem(100px);
+
+	&__label {
+		@extend %f-label;
+		color: $c-instock-black;
+	}
+
+	&__field {
+		display: block;
+		margin-top: $space-0;
+		width: 100%;
+		border: 1px solid $c-cloud;
+		border-radius: $border-radius;
+		padding: $space-2;
+		background-color: $c-white;
+
+		&:not(textarea) {
+			height: pxToRem(36);
+		}
+		&::placeholder {
+			color: $c-slate;
+			opacity: 1;
+		}
+		&:focus {
+			outline: 1px solid $c-instock-indigo;
+			outline-offset: -1px;
+		}
+		&--invalid {
+			border-color: $c-red;
+		}
+	}
+}
