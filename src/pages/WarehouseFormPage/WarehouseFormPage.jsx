@@ -41,10 +41,9 @@ function WarehouseFormPage() {
           `${import.meta.env.VITE_API_URL}/api/warehouses/${warehouseID}`
         );
         setValues(response.data); // Update the form with the fetched data
+        setIsLoading(false); // Set loading to false after fetch attempt
       } catch (error) {
         handleFetchError(error); // Handle any errors
-      } finally {
-        setIsLoading(false); // Set loading to false after fetch attempt
       }
     }
 
@@ -57,24 +56,36 @@ function WarehouseFormPage() {
   }, [warehouseID]);
 
   // Improved error handling
-  function handleFetchError(error) {
+  // If a toastId is given, it will update that toast. If no toastId is given,
+  // it will create a new toast.
+  function handleFetchError(error, toastId = null) {
+    let errorMessage;
     if (error.response) {
       const status = error.response.status;
       if (status === 404) {
-        toast.error("Warehouse not found. Please check the warehouse ID.");
+        errorMessage = "Warehouse not found. Please check the warehouse ID.";
       } else if (status === 400) {
-        toast.error("Invalid input. Please check the data you've entered.");
+        errorMessage = "Invalid input. Please check the data you've entered.";
       } else {
-        toast.error(
-          `An error occurred: ${error.response.data.message || "Unknown error"}`
-        );
+        errorMessage =
+          `An error occurred: ${error.response.data.message || "Unknown error"}`;
       }
     } else if (error.request) {
-      toast.error(
-        "No response from the server. Please check your network connection."
-      );
+      errorMessage =
+        "No response from the server. Please check your network connection.";
     } else {
-      toast.error(`Request error: ${error.message}`);
+      errorMessage = `Request error: ${error.message}`;
+    }
+    // display the error message
+    if (toastId) {
+      toast.update(toastId, {
+        render: errorMessage,
+        type: "error",
+        isLoading: false,
+        autoClose: 5000
+      });
+    } else {
+      toast.error(errorMessage);
     }
   }
   /** Updates form state when user interacts with fields. */
@@ -86,35 +97,40 @@ function WarehouseFormPage() {
   /** Submits form data to API */
   async function handleSubmit(ev) {
     ev.preventDefault();
+    let toastId,
+      successMessage;
 
     try {
-      let request;
       if (isEditMode) {
+        toastId = toast.loading("Updating warehouse...");
         // PUT request for editing an existing warehouse
-        request = axios.put(
+        await axios.put(
           `${import.meta.env.VITE_API_URL}/api/warehouses/${warehouseID}`,
           values
         );
-        toast.promise(request, {
-          pending: "Updating warehouse...",
-          success: "Warehouse updated!",
-          error: "Failed to update warehouse.",
+        successMessage = "Warehouse updated!";
+        toast.update(toastId, {
+          render: "Warehouse updated!",
+          type: "success",
+          isLoading: false
         });
       } else {
-        request = axios.post(
+        toastId = toast.loading("Submitting new warehouse...");
+        await axios.post(
           `${import.meta.env.VITE_API_URL}/api/warehouses`,
           values
         );
-        toast.promise(request, {
-          pending: "Submitting form...",
-          success: "Warehouse created!",
-          error: "Failed to create warehouse.",
-        });
+        successMessage = "Warehouse created!";
       }
-      await request;
+      toast.update(toastId, {
+        render: successMessage,
+        type: "success",
+        isLoading: false,
+        autoClose: 5000
+      });
       setTimeout(() => navigate("/warehouses"), 5000);
     } catch (error) {
-    handleFetchError(error);
+      handleFetchError(error, toastId);
     }
   }
 
