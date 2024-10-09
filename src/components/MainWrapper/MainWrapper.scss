@@ -1,0 +1,18 @@
+@use "../../styles/partials/global" as *;
+
+.main-wrapper {
+	--header-overlap: #{pxToRem(93)};
+	width: 100%;
+	// Use a gradient to simulate an overlap of the header and main content
+	background: linear-gradient(
+		to bottom,
+		$c-graphite,
+		$c-graphite var(--header-overlap),
+		$c-light-grey var(--header-overlap),
+		$c-light-grey
+	);
+
+	@include tablet {
+		--header-overlap: #{pxToRem(97)};
+	}
+}
