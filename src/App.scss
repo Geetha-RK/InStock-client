@@ -1,0 +1,17 @@
+@use "styles/partials/global" as *;
+
+.skip-to-main {
+	&:focus {
+		position: fixed;
+		z-index: 10;
+		border-bottom-right-radius: $border-radius;
+		padding: $space-1 $space-2 $space-2 $space-1;
+		background: $c-instock-indigo;
+		color: $c-white;
+		cursor: pointer;
+		@extend %f-body-large;
+	}
+	&:not(:focus) {
+		@include screen-reader-only;
+	}
+}

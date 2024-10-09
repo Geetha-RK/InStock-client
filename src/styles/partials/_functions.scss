@@ -1,0 +1,9 @@
+@use "sass:math";
+
+/// Converts pixel values to rems.
+/// @param {number} $px The pixel value to convert.
+/// @return {number} The rem equivalent of the input value.
+@function pxToRem($px) {
+	$pxValue: math.div($px, ($px * 0 + 1)); // strip units
+	@return math.div($pxValue, 16) * 1rem;
+}

@@ -1,0 +1,28 @@
+@use "variables" as *;
+
+// || LAYOUT
+
+/// A set of styles which hides an element visually, while ensuring screen
+/// readers will still read the contents.
+/// @see <https://css-tricks.com/inclusively-hidden/>
+@mixin screen-reader-only {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+
+/// At the tablet breakpoint and above, use padding to clamp the width of an
+/// element's inner content so it's never wider than the maximum width allowed
+/// for content on desktop. It's like margin: auto except the element's
+/// background can extend the full width of the page. Useful in situations
+/// where and element should have a background colour that extends the full
+/// width of the page, but its content has to stay centered within it.
+@mixin content-width-clamp {
+	@include tablet {
+		padding-inline: max(calc((100% - $max-content-width) / 2), $margin-tablet);
+	}
+}

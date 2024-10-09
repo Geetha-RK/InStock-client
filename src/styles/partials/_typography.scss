@@ -1,0 +1,73 @@
+@use "functions" as *;
+@use "breakpoints" as *;
+
+// || FONT FACES
+
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
+
+@font-face {
+	font-family: "Titillium Web-fallback";
+	src: local(Arial);
+	size-adjust: 94%;
+	ascent-override: 117%;
+	descent-override: 41%;
+}
+
+// || FONT FAMILY RESETS
+
+$f-titillium-family: "Titillium Web", "Titillium Web-fallback", Arial, Helvetica, sans-serif;
+
+body {
+	font-family: $f-titillium-family;
+}
+textarea, input {
+	font-family: inherit;
+}
+
+// || FONT STYLE PLACEHOLDERS
+
+// private mixin for creating the placeholders
+@mixin -font-responsive($weight, $size-mobile, $lineheight-mobile, $size-tablet, $lineheight-tablet) {
+	font-weight: $weight;
+	font-size: pxToRem($size-mobile);
+	line-height: $lineheight-mobile;
+	@include tablet {
+		font-size: pxToRem($size-tablet);
+		line-height: $lineheight-tablet;
+	}
+}
+
+// @extend these to set responsive font sizes and weight
+
+%f-page-header {
+	@include -font-responsive(600, 28px, 36px, 32px, 40px);
+}
+%f-sub-header {
+	@include -font-responsive(600, 20px, 28px, 24px, 32px);
+}
+%f-table-header {
+	text-transform: uppercase;
+	@include -font-responsive(600, 11px, 16px, 12px, 18px);
+}
+
+%f-body-large {
+	@include -font-responsive(400, 15px, 26px, 16px, 28px);
+}
+%f-body-medium {
+	@include -font-responsive(400, 13px, 20px, 14px, 22px);
+}
+%f-body-small {
+	@include -font-responsive(400, 11px, 16px, 12px, 18px);
+}
+
+%f-label {
+	@include -font-responsive(600, 13px, 20px, 14px, 22px);
+}
+%f-link {
+	// in case we need to make specific adjustments to this style later to match the mockups
+	@extend %f-label;
+}
+%f-button {
+	// in case we need to make specific adjustments to this style later to match the mockups
+	@extend %f-label;
+}
