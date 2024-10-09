@@ -5,7 +5,7 @@ import PageHeader from "../../components/PageHeader/PageHeader";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
@@ -31,8 +31,15 @@ function WarehouseFormPage() {
   const [isEditMode, setIsEditMode] = useState(false); //Track if it's an edit or add mode
   const [isLoading, setIsLoading] = useState(true);
 
+  // Track if the component is mounted or not, so we know if we can update
+  // state after asynchronous operations or not.
+  const isMounted = useRef(false);
   useEffect(() => {
+    isMounted.current = true;
+    return () => isMounted.current = false;
+  }, [])
 
+  useEffect(() => {
     // Pass this object to the axios request, and we can use it to cancel the
     // response at any time. We do this so we can ignore requests that are still
     // running when this component unmounts, because we no longer need them.
@@ -91,15 +98,17 @@ function WarehouseFormPage() {
       errorMessage = `Request error: ${error.message}`;
     }
     // display the error message
-    if (toastId) {
-      toast.update(toastId, {
-        render: errorMessage,
-        type: "error",
-        isLoading: false,
-        autoClose: 5000
-      });
-    } else {
-      toast.error(errorMessage);
+    if (isMounted.current) {
+      if (toastId) {
+        toast.update(toastId, {
+          render: errorMessage,
+          type: "error",
+          isLoading: false,
+          autoClose: 5000
+        });
+      } else {
+        toast.error(errorMessage);
+      }
     }
   }
   /** Updates form state when user interacts with fields. */
@@ -123,11 +132,6 @@ function WarehouseFormPage() {
           values
         );
         successMessage = "Warehouse updated!";
-        toast.update(toastId, {
-          render: "Warehouse updated!",
-          type: "success",
-          isLoading: false
-        });
       } else {
         toastId = toast.loading("Submitting new warehouse...");
         await axios.post(
@@ -136,13 +140,15 @@ function WarehouseFormPage() {
         );
         successMessage = "Warehouse created!";
       }
-      toast.update(toastId, {
-        render: successMessage,
-        type: "success",
-        isLoading: false,
-        autoClose: 5000
-      });
-      setTimeout(() => navigate("/warehouses"), 5000);
+      if (isMounted.current) {
+        toast.update(toastId, {
+          render: successMessage,
+          type: "success",
+          isLoading: false,
+          autoClose: 5000,
+          onClose: () => navigate("/warehouses")
+        });
+      }
     } catch (error) {
       handleFetchError(error, toastId);
     }
