@@ -30,6 +30,8 @@ $space-6: $space-base * 6;		// 48
 $space-7: $space-base * 7;		// 56
 $space-8: $space-base * 8;		// 64
 $space-10: $space-base * 10;	// 80
+$space-16: $space-base * 16.25;	// 130
+
 
 
 // || LAYOUT
@@ -44,4 +46,4 @@ $gutter-desktop: $space-3;
 // Calculated from the layout grid
 $max-content-width: pxToRem((63px * 12) + (24px * 11));
 
-$border-radius: pxToRem(20);
+$border-radius: pxToRem(40);

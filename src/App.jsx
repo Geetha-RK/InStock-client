@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import Announcement from './components/Announcement/Announcement';
 
 import WarehousePage from './pages/WarehousePage/WarehousePage';
+import Header from './components/Header/Header';
 import WarehouseListPage from './pages/WarehouseListPage/WarehouseListPage';
 import WarehouseFormPage from './pages/WarehouseFormPage/WarehouseFormPage';
 import InventoryListPage from './pages/InventoryListPage/InventoryListPage';
@@ -45,6 +46,7 @@ function App() {
 		<AnnouncementContext.Provider value={{setAnnouncement, refocusOnMain, userNavigated, canGoBack}}>
 
 			{/* Header component and other content that needs to be above the main content can go here */}
+			<Header></Header>
 
 			<main className="main" ref={mainWrapperRef}>
 				<Routes>
