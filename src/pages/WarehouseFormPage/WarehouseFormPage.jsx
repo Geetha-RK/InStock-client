@@ -32,28 +32,29 @@ function WarehouseFormPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Function to fetch warehouse details when editing
+    // Moving this inside the useEffect ensures that react does not get stuck in an infinite rendering loop
+    async function fetchWarehouseDetails() {
+      setIsLoading(true); // Set loading to true before fetching
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/warehouses/${warehouseID}`
+        );
+        setValues(response.data); // Update the form with the fetched data
+      } catch (error) {
+        handleFetchError(error); // Handle any errors
+      } finally {
+        setIsLoading(false); // Set loading to false after fetch attempt
+      }
+    }
+
     if (warehouseID) {
       setIsEditMode(true); // It's in edit mode if warehouseID exists
-      fetchWarehouseDetails(warehouseID);
+      fetchWarehouseDetails();
     } else {
-    setIsLoading(false); // If not editing, set loading to false immediately
-  }
-  }, [warehouseID]);
-
-  // Function to fetch warehouse details when editing
-  async function fetchWarehouseDetails(id) {
-    setIsLoading(true); // Set loading to true before fetching
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/warehouses/${id}`
-      );
-      setValues(response.data); // Update the form with the fetched data
-    } catch (error) {
-      handleFetchError(error); // Handle any errors
-    } finally {
-      setIsLoading(false); // Set loading to false after fetch attempt
+      setIsLoading(false); // If not editing, set loading to false immediately
     }
-  }
+  }, [warehouseID]);
 
   // Improved error handling
   function handleFetchError(error) {
