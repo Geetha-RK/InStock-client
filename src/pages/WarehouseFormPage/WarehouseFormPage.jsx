@@ -32,18 +32,29 @@ function WarehouseFormPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+
+    // Pass this object to the axios request, and we can use it to cancel the
+    // response at any time. We do this so we can ignore requests that are still
+    // running when this component unmounts, because we no longer need them.
+    const abortController = new AbortController();
+
     // Function to fetch warehouse details when editing
     // Moving this inside the useEffect ensures that react does not get stuck in an infinite rendering loop
     async function fetchWarehouseDetails() {
       setIsLoading(true); // Set loading to true before fetching
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/warehouses/${warehouseID}`
+          `${import.meta.env.VITE_API_URL}/api/warehouses/${warehouseID}`,
+          { signal: abortController.signal }
         );
         setValues(response.data); // Update the form with the fetched data
         setIsLoading(false); // Set loading to false after fetch attempt
       } catch (error) {
-        handleFetchError(error); // Handle any errors
+        // Make sure to ignore errors from the abort controller canceling; we
+        // only do that when we don't need the request anymore.
+        if (error.name !== "CanceledError") {
+          handleFetchError(error); // Handle any errors
+        }
       }
     }
 
@@ -53,6 +64,9 @@ function WarehouseFormPage() {
     } else {
       setIsLoading(false); // If not editing, set loading to false immediately
     }
+
+    // Return a clean up function; when this component unmounts, it will cancel the request for warehouse details if its still running.
+    return () => abortController.abort();
   }, [warehouseID]);
 
   // Improved error handling
