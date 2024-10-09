@@ -6,7 +6,7 @@ import NavLink from "../NavLink/NavLink";
 function Header() {
 
 	return (
-		<section className='header'>
+		<header className='header'>
             <img className='header__logo' src={logo} alt='Website logo'/>
             <nav className='header__navigation'>
                 <ul className='header__list'>
@@ -22,7 +22,7 @@ function Header() {
                     </li>
                 </ul>
             </nav>
-        </section>
+        </header>
 	);
 }
 
