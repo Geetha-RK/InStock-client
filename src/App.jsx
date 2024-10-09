@@ -12,6 +12,7 @@ import WarehousePage from './pages/WarehousePage/WarehousePage';
 import InventoryListPage from './pages/InventoryListPage/InventoryListPage';
 import InventoryFormPage from './pages/InventoryFormPage/InventoryFormPage';
 import InventoryItemPage from './pages/InventoryItemPage/InventoryItemPage';
+import Footer from './components/Footer/Footer';
 
 /*
 Do NOT use react router's normal `Link` or `NavLink`components.
@@ -73,6 +74,7 @@ function App() {
 				</Routes>
 			</MainWrapper>
 
+			<Footer />
 			{/* Footer component and other content that needs to be below the main content can go here */}
 
 		</AnnouncementContext.Provider>
