@@ -36,23 +36,22 @@ function WarehouseFormPage() {
       setIsEditMode(true); // It's in edit mode if warehouseID exists
       fetchWarehouseDetails(warehouseID);
     } else {
-		setIsLoading(false); // If not editing, set loading to false immediately
-	}
+    setIsLoading(false); // If not editing, set loading to false immediately
+  }
   }, [warehouseID]);
 
   // Function to fetch warehouse details when editing
   async function fetchWarehouseDetails(id) {
-	setIsLoading(true); // Set loading to true before fetching
+    setIsLoading(true); // Set loading to true before fetching
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/warehouses/${id}`
       );
-      console.log("response:", response);
       setValues(response.data); // Update the form with the fetched data
     } catch (error) {
-      	handleFetchError(error); // Handle any errors
+      handleFetchError(error); // Handle any errors
     } finally {
-      	setIsLoading(false); // Set loading to false after fetch attempt
+      setIsLoading(false); // Set loading to false after fetch attempt
     }
   }
 
@@ -88,9 +87,10 @@ function WarehouseFormPage() {
     ev.preventDefault();
 
     try {
+      let request;
       if (isEditMode) {
         // PUT request for editing an existing warehouse
-        const request = axios.put(
+        request = axios.put(
           `${import.meta.env.VITE_API_URL}/api/warehouses/${warehouseID}`,
           values
         );
@@ -100,7 +100,7 @@ function WarehouseFormPage() {
           error: "Failed to update warehouse.",
         });
       } else {
-        const request = axios.post(
+        request = axios.post(
           `${import.meta.env.VITE_API_URL}/api/warehouses`,
           values
         );
@@ -113,7 +113,7 @@ function WarehouseFormPage() {
       await request;
       setTimeout(() => navigate("/warehouses"), 5000);
     } catch (error) {
-		handleFetchError(error); 
+    handleFetchError(error);
     }
   }
 
