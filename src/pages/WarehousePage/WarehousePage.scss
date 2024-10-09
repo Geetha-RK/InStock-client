@@ -1,0 +1,24 @@
+@use "../../styles/partials/global" as *;
+
+.warehouse-details-page{
+    &__head{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+    &__edit-box{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        background-color: $c-instock-indigo;
+        width:36px;
+        height: 36px;
+        top:33px;
+        border-radius: 20px;
+    }
+    &__edit-icon{
+        width:20px;
+        height:20px;
+    }
+}
