@@ -12,7 +12,7 @@ function Input({ type = "text", label, description = "", onChange, onInvalid, cl
 		return ("Disallowed input type.");
 	}
 	if (!label) {
-		// console.error("Inputs must have a label");
+		console.error("Inputs must have a label");
 	}
 	if (rest.pattern && !description) {
 		console.error("Please provide a 'description' prop explaining the required pattern for this field.");

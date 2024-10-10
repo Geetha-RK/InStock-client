@@ -11,13 +11,13 @@ import Link from "../Link/Link";
 function WarehouseList({data}) {
 	
 	return (
-		<section className='warehouse-component'>
+		<MainCard className='warehouse-component'>
 			<section className='warehouse-list'>
 				<div className='warehouse-list__header'>
-					<h2 className='warehouse-list__title'>Warehouses</h2>
+					<h1 className='warehouse-list__title'>Warehouses</h1>
 					<div className='warehouse-list__inputs'>
-						<Input inputClassName='warehouse-list__search-bar' placeholder='Search...' type='search' label='' onChange=''></Input>
-						<Button className='warehouse-list__add-warehouse' to ='/warehouses/add' variant='primary' >Add New Warehouse</Button>
+						<Input inputClassName='warehouse-list__search-bar' label={<span className='warehouse-list__search-bar--label'>Search</span>} placeholder='Search...' type='search' onChange=''></Input>
+						<Button className='warehouse-list__add-warehouse' to ='/warehouses/add' variant='primary' >+ Add New Warehouse</Button>
 					</div>
 				</div>
 				<div className='warehouse-list__records-container'>
@@ -35,7 +35,7 @@ function WarehouseList({data}) {
 							<li className='warehouse-list__label-item'>CONTACT INFORMATION
 								<img src={sortIcon} className='warehouse-list__label-sort' />
 							</li>
-							<li className='warehouse-list__label-item'>ACTIONS
+							<li className='warehouse-list__label-item warehouse-list__label-item--actions'>ACTIONS
 							</li>
 						</ul>
 					</div>
@@ -43,42 +43,38 @@ function WarehouseList({data}) {
 					data.map((item) => {
 						return (
 							<article className='warehouse-record' key={item.id}>
-								<ul className='warehouse-record__list'>
 									<ul className='warehouse-record__sub-list'>
-										<li className='warehouse-record__list-item'>
+										<li className='warehouse-record__list-item warehouse-record__list-item--warehouse'>
 											<h4 className='warehouse-record__label'>WAREHOUSE</h4>
 											<div className='warehouse-record__info'>
 												<Link to={`/warehouses/${item.id}`} className='warehouse-record__info-details--link'><p>{item.warehouse_name}</p></Link>
 												<img className='warehouse-list__view-details' src={viewDetailsIcon} alt='view warehouse detail button' />
 											</div>
 										</li>
-										<li className='warehouse-record__list-item'>
+										<li className='warehouse-record__list-item warehouse-record__list-item--address'>
 											<h4 className='warehouse-record__label'>ADDRESS</h4>
 											<p className='warehouse-record__info-details'>{`${item.address}, ${item.city}, ${item.country}`}</p>
 										</li>
-									</ul>
-									<ul className='warehouse-record__sub-list'>
-										<li className='warehouse-record__list-item'>
+										<li className='warehouse-record__list-item warehouse-record__list-item--contact-name'>
 											<h4 className='warehouse-record__label'>CONTACT NAME</h4>
 											<p className='warehouse-record__info-details'>{item.contact_name}</p>
 										</li>
-										<li className='warehouse-record__list-item'>
+										<li className='warehouse-record__list-item warehouse-record__list-item--contact-info'>
 											<h4 className='warehouse-record__label'>CONTACT INFORMATION</h4>
 											<p className='warehouse-record__info-details'>{`${item.contact_phone} ${item.contact_email}`}</p>
 										</li>
+										<li className='warehouse-record__actions'>
+											<Link to=''><img className='warehouse-record__delete' src={deleteIcon} alt='delete icon' /></Link>
+											<Link to={`/warehouses/edit/${item.id}`}><img className='warehouse-record__edit' src={editIcon} alt='edit icon' /></Link>
+										</li>
 									</ul>
-								</ul>
-								<div className='warehouse-record__actions'>
-									<Link to=''><img className='warehouse-record__delete' src={deleteIcon} alt='delete icon' /></Link>
-									<Link to={`/warehouses/edit/${item.id}`}><img className='warehouse-record__edit' src={editIcon} alt='edit icon' /></Link>
-								</div>	
 							</article>
 						)
 					})
 				}
 				</div>
 			</section>
-		</section>
+		</MainCard>
 	);
 }
 
