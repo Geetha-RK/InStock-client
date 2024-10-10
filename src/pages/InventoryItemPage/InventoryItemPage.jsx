@@ -7,7 +7,8 @@ import axios from "axios";
 
 function InventoryItemPage() {
 	const { itemID } = useParams();
-	const [item, setItem] = useState(null);
+	const [item, setItem] = useState(null),
+		[error, setError] = useState("");
 
 	// For tracking if component is mounted;
 	// i.e. if API request should be used or ignored
@@ -20,6 +21,8 @@ function InventoryItemPage() {
 	useEffect(() => {
 		// anonymous function that calls itself immediately
 		(async () => {
+			setItem(null);
+			setError("");
 			try {
 				const response = await axios.get(
 					`${import.meta.env.VITE_API_URL}/api/inventories/${itemID}`,
@@ -27,9 +30,18 @@ function InventoryItemPage() {
 				);
 				if (!isMounted.current) { return; }
 				setItem(response.data);
-			} catch {
+			} catch (error) {
 				if (!isMounted.current) { return; }
-				// TODO error handling
+				const badRes = error.response;
+				console.log(error, error.response);
+				if (badRes?.status) {
+					const data = badRes.data?.message || badRes.data;
+					setError(`${badRes.status} ${badRes.statusText}${data ? `: ${data}` : ""}`);
+				} else if (error.request) {
+					setError("No response from the server. Please check your network connection.");
+				} else {
+					setError(error.message);
+				}
 			}
 		})();
 	}, [itemID]);
@@ -44,15 +56,28 @@ function InventoryItemPage() {
 
 	const block = "item-detail-page";
 	return (
-		<MainCard className={block} aria-busy={!item}>
+		<MainCard className={block} aria-busy={!item && !error}>
 			<PageHeader hasBackButton={true}>
-				{item ? item.item_name : "Loading..."}
+				{error && "Error"}
+				{!error && (item ? item.item_name : "Loading...")}
 			</PageHeader>
 
+			{(error || !item) && (
+			<div className={`${block}__temporary`}>
+				<p className={`${block}__error-apology`}>
+					{error && "Sorry, an error occurred."}
+				</p>
+				<p className={`${block}__error-message`}>
+					{error}
+				</p>
+			</div>)}
+
+			{item && (
 			<dl className={`${block}__content`}>
-				{item && Object.entries(item)
+				{Object.entries(item)
 						.filter(([k]) => !["id","item_name", "created_at", "updated_at"].includes(k))
 						.map(([k, val]) => (
+
 					<div key={k} className={`${block}__field ${block}__field--${k.replaceAll("_", "-")}`}>
 						<dt className={`${block}__field-title`}>
 							{readableFieldTitle(k)}
@@ -61,8 +86,9 @@ function InventoryItemPage() {
 							{val}
 						</dd>
 					</div>
+
 				))}
-			</dl>
+			</dl>)}
 		</MainCard>
 	);
 }

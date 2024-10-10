@@ -1,6 +1,21 @@
 @use "../../styles/partials/global" as *;
 
 .item-detail-page {
+	color: $c-instock-black;
+
+	// error & load states
+	&__temporary {
+		padding-block: $space-4;
+		// to reduce layout shift after data load
+		height: $space-4*2 + pxToRem(200);
+		@extend %f-body-large;
+		text-align: center;
+	}
+	&__error-message {
+		@extend %f-body-small;
+	}
+
+	// main state
 	&__content {
 		margin: 0;
 		padding: $space-2 $space-3;
@@ -22,7 +37,6 @@
 	&__field-value {
 		margin: 0;
 		@extend %f-body-large;
-		color: $c-instock-black;
 	}
 
 	@include tablet {
