@@ -50,9 +50,7 @@ function WarehouseListPage() {
 	async function deleteWarehouse(id) {
 		if (!id) { return; }
 		try {
-			await axios.delete(
-				`${import.meta.env.VITE_API_URL}/api/warehouses/${id}`
-			);
+			await axios.delete(`${url}/api/warehouses/${id}`);
 			if (!isMounted.current) { return; }
 			toast.success("Warehouse deleted.");
 			getWarehouseList();
@@ -77,16 +75,13 @@ function WarehouseListPage() {
 		}
 	}
 
-    if(isError) {
-        return <h1>Sorry, there was some error in fetching the list</h1>
-    }
-
-    if(isLoading) {
-        return <h1>Loading list...</h1>
-    }
-
 	return (<>
-		<WarehouseList data={warehouseList} deleteItemFn={showDeleteModal}/>
+        {isError && <h1>Sorry, there was some error in fetching the list</h1>}
+
+        {isLoading && !isError && <h1>Loading list...</h1>}
+
+		{!isLoading && !isError && <WarehouseList data={warehouseList} deleteItemFn={showDeleteModal}/>}
+
         <Modal
             isOpen={modalOpen}
             setIsOpen={setModalOpen}
