@@ -13,9 +13,9 @@ export function useGoBack(fallbackRoute = "/") {
 
 	return useCallback(() => {
 		if (canGoBack) {
-			navigate(-1);
+			navigate(-1, { replace: true });
 		} else {
 			navigate(fallbackRoute, { replace: true });
 		}
-	}, [canGoBack, fallbackRoute]);
+	}, [canGoBack, fallbackRoute, navigate]);
 }
