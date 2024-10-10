@@ -18,7 +18,7 @@ import closeSrc from "../../assets/icons/close-24px.svg";
  * it applies to an "Ok" button instead. Either can be asynchronous if needed.
  *
  * `focusRefAfterClose` is an optional `ref` to a DOM element that will receive
- * keyboard focus after the modal is closed. */
+ * keyboard focus after the modal is closed; `focusRefAfterDelete` is the same, but is only focused if the delete button was what closed the modal. */
 function Modal({
 	isOpen = false,
 	setIsOpen,
@@ -26,7 +26,8 @@ function Modal({
 	content = "",
 	onDelete,
 	onConfirm,
-	focusRefAfterClose
+	focusAfterCloseRef,
+	focusAfterDeleteRef
 }) {
 	// reasonably random id - 4 random digits and the last 4-5 digits
 	// of the time in milliseconds.
@@ -37,18 +38,22 @@ function Modal({
 	}`);
 
 	const modalRef = useRef(null);
-	const wasOpened = useRef(isOpen);
+	const wasOpened = useRef(isOpen),
+		focusRef = useRef(focusAfterCloseRef);
 
 	function handleCancel() {
 		setIsOpen(false);
+		focusRef.current = focusAfterCloseRef;
 	}
 	async function handleDelete(ev) {
 		await onDelete?.(ev);
 		setIsOpen(false);
+		focusRef.current = focusAfterDeleteRef;
 	}
 	async function handleConfirm(ev) {
 		await onConfirm?.(ev);
 		setIsOpen(false);
+		focusRef.current = focusAfterCloseRef;
 	}
 
 	useEffect(() => {
@@ -60,9 +65,9 @@ function Modal({
 			wasOpened.current = true;
 		} else {
 			modalEl?.close();
-			wasOpened.current && focusRefAfterClose?.current?.focus();
+			wasOpened.current && focusRef?.current?.current?.focus();
 		}
-	}, [isOpen, focusRefAfterClose]);
+	}, [isOpen]);
 
 	return (
 	<dialog
