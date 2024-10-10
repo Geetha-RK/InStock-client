@@ -5,14 +5,14 @@ import { useState } from "react";
  * any valid type on an `<input>` element that results in a text box being
  * rendered. You can also pass it any attribute that you would use on an
  * `<input>`, such as `value`. */
-function Input({ type = "text", label, description = "", onChange, onInvalid, className ="", inputClassName = "", ...rest }) {
+function Input({ type = "text", label, hideLabel = false, description = "", onChange, onInvalid, className ="", inputClassName = "", ...rest }) {
 	const [invalidMessage, setInvalidMessage] = useState("");
 
 	if (["file","image","submit","button","checkbox","radio","reset","color"].includes(type)) {
 		return ("Disallowed input type.");
 	}
 	if (!label) {
-		// console.error("Inputs must have a label");
+		console.error("Inputs must have a label");
 	}
 	if (rest.pattern && !description) {
 		console.error("Please provide a 'description' prop explaining the required pattern for this field.");
@@ -43,7 +43,7 @@ function Input({ type = "text", label, description = "", onChange, onInvalid, cl
 
 	return (
 		<label className={`input ${className}`}>
-			<span className={`input__label`}>
+			<span className={hideLabel ? "input__hidden" : "input__label"}>
 				{label}
 			</span>
 			<TagName
