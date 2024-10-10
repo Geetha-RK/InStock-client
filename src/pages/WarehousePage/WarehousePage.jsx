@@ -68,7 +68,7 @@ function WarehousePage() {
   }
 
   const handleEditClick = () => {
-	navigate(`/warehouses/edit/${values.id}`); // Adjust the path as needed
+		navigate(`/warehouses/edit/${values.id}`); // Adjust the path as needed
 	};
 
   return (
@@ -79,7 +79,27 @@ function WarehousePage() {
 			</PageHeader>
 			<div className={`${block}__edit-box`} onClick={handleEditClick}>
 				<img className={`${block}__edit-icon`} src={editicon} alt="edit-icon"/>
+				<span className={`${block}__edit-text`}>Edit</span>
 			</div>
+		  </div>
+		  <div className={`${block}__details`}>
+				<div>
+					<label>WAREHOUSE ADDRESS:</label>
+					<p>{values.address}</p>
+					<p>{values.city},{values.country}</p>
+				</div>
+				<div>
+					<div>
+						<label>CONTACT NAME:</label>
+						<p>{values.contact_name}</p>
+						<p>{values.contact_position}</p>
+					</div>
+					<div>
+						<label>CONTACT INFORMATION:</label>
+						<p>{values.contact_phone}</p>
+						<p>{values.contact_email}</p>
+					</div>
+				</div>
 		  </div>
 	</MainCard>
   );

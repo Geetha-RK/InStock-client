@@ -5,20 +5,49 @@
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
+
+        @include tablet{
+            justify-content: space-between;
+        }
     }
     &__edit-box{
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
         position: relative;
         background-color: $c-instock-indigo;
         width:36px;
         height: 36px;
         top:33px;
         border-radius: 20px;
+
+        @include tablet{
+            width: 81px; 
+            height: 38px; 
+            border-radius: 1.25rem; 
+            margin-right:36px;
+            
+            
+            padding: $space-1 $space-2; 
+            gap: 10px; 
+            
+            background-color: $c-instock-indigo;
+            border: none; 
+            cursor: pointer;
+        }
     }
     &__edit-icon{
         width:20px;
         height:20px;
+    }
+    &__edit-text{
+        display: none;
+        @extend %f-body-small;
+
+        @include tablet{
+            display: inline;
+            color:$c-white;
+        }
     }
 }
