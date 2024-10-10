@@ -3,6 +3,8 @@ import WarehouseList from "../../components/WarehouseList/WarehouseList";
 import Modal from "../../components/Modal/Modal";
 import axios from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function WarehouseListPage() {
 	const [warehouseList, setWarehouseList] = useState([]);
@@ -52,9 +54,26 @@ function WarehouseListPage() {
 				`${import.meta.env.VITE_API_URL}/api/warehouses/${id}`
 			);
 			if (!isMounted.current) { return; }
+			toast.success("Warehouse deleted.");
 			getWarehouseList();
 		} catch (error) {
             console.error(error);
+			if (!isMounted.current) { return; }
+			let errorMessage;
+			if (error.response) {
+				if (error.response.status === 404) {
+					errorMessage = "Warehouse not found.";
+				} else {
+					errorMessage =
+					`Error: ${error.response.data.message || "Unknown error"}`;
+				}
+			} else if (error.request) {
+				errorMessage =
+					"No response from the server. Please check your network connection.";
+			} else {
+				errorMessage = `Error: ${error.message}`;
+			}
+			toast.error(errorMessage);
 		}
 	}
 
