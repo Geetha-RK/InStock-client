@@ -2,7 +2,9 @@ import './App.scss';
 import { createContext, useRef } from 'react'
 import { useAnnouncementSystem } from './hooks/useAnnouncementSystem';
 import { Route, Routes } from "react-router-dom";
+
 import Announcement from './components/Announcement/Announcement';
+import Navigate from './components/Navigate/Navigate';
 
 import Header from './components/Header/Header';
 import MainWrapper from './components/MainWrapper/MainWrapper';
@@ -47,35 +49,29 @@ function App() {
 
 		<AnnouncementContext.Provider value={{setAnnouncement, refocusOnMain, userNavigated, canGoBack}}>
 
-			{/* Header component and other content that needs to be above the main content can go here */}
 			<Header/>
 
 			<MainWrapper ref={mainWrapperRef}>
 				<Routes>
-					<Route path="/"
-						element={<WarehouseListPage/>}/>
-					<Route path="/warehouses"
-						element={<WarehouseListPage/>} />
-					<Route path="/warehouses/:warehouseID"
-						element={<WarehousePage/>} />
-					<Route path="/warehouses/add"
-						element={<WarehouseFormPage/>} />
-					<Route path="/warehouses/edit/:warehouseID"
-						element={<WarehouseFormPage/>} />
+					<Route path="/" element={<Navigate to="/warehouses"/>}/>
 
-					<Route path="/inventory"
-						element={<InventoryListPage/>} />
-					<Route path="/inventory/:itemID"
-						element={<InventoryItemPage/>} />
-					<Route path="/inventory/add"
-						element={<InventoryFormPage/>} />
-					<Route path="/inventory/edit/:itemID"
-						element={<InventoryFormPage/>} />
+					<Route path="/warehouses">
+						<Route index element={<WarehouseListPage/>} />
+						<Route path=":warehouseID" element={<WarehousePage/>} />
+						<Route path="add" element={<WarehouseFormPage/>} />
+						<Route path="edit/:warehouseID" element={<WarehouseFormPage/>} />
+					</Route>
+
+					<Route path="/inventory">
+						<Route index element={<InventoryListPage/>} />
+						<Route path=":itemID" element={<InventoryItemPage/>} />
+						<Route path="add" element={<InventoryFormPage/>} />
+						<Route path="edit/:itemID" element={<InventoryFormPage/>} />
+					</Route>
 				</Routes>
 			</MainWrapper>
 
 			<Footer />
-			{/* Footer component and other content that needs to be below the main content can go here */}
 
 		</AnnouncementContext.Provider>
 		<Announcement>{announcement}</Announcement>
