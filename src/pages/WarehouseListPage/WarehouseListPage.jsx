@@ -2,7 +2,7 @@ import "./WarehouseListPage.scss";
 import WarehouseList from "../../components/WarehouseList/WarehouseList";
 import Modal from "../../components/Modal/Modal";
 import axios from 'axios';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 function WarehouseListPage() {
 	const [warehouseList, setWarehouseList] = useState([]);
@@ -13,15 +13,25 @@ function WarehouseListPage() {
 	const [modalOpen, setModalOpen] = useState(false),
         [modalItem, setModalItem] = useState(null);
 
+	// Track if the component is mounted or not, so we know if we can update
+	// state after asynchronous operations or not.
+	const isMounted = useRef(false);
+	useEffect(() => {
+		isMounted.current = true;
+		return () => isMounted.current = false;
+	}, []);
+
     const getWarehouseList = useCallback(async () => {
         setIsLoading(true);
         setIsError(false);
         try {
             const {data} = await axios.get(`${url}/api/warehouses/`);
+            if (!isMounted.current) { return; }
             setWarehouseList(data);
             setIsLoading(false);
         } catch (error){
             console.log(`Could not fetch warehouse list ${error}`);
+            if (!isMounted.current) { return; }
             setIsError(true);
         }
     }, [url]);
@@ -41,6 +51,7 @@ function WarehouseListPage() {
 			await axios.delete(
 				`${import.meta.env.VITE_API_URL}/api/warehouses/${id}`
 			);
+			if (!isMounted.current) { return; }
 			getWarehouseList();
 		} catch (error) {
             console.error(error);
