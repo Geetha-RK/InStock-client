@@ -172,8 +172,8 @@
     }
 
     &__delete {
-        width:1.5rem;
-        height: 1.5rem;
+        width: $space-3 + pxToRem(2);
+        height: $space-3 + pxToRem(2);
 
         @include tablet {
             margin-inline:1rem;
@@ -181,6 +181,7 @@
     }
 
     &__edit {
+        display: block;
         width: 1.5rem;
         height: 1.5rem;
     }
