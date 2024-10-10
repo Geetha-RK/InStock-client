@@ -16,7 +16,7 @@ function WarehouseList({data}) {
 				<div className='warehouse-list__header'>
 					<h1 className='warehouse-list__title'>Warehouses</h1>
 					<div className='warehouse-list__inputs'>
-						<Input inputClassName='warehouse-list__search-bar' label={<span className='warehouse-list__search-bar--label'>Search</span>} placeholder='Search...' type='search' onChange=''></Input>
+						<Input inputClassName='warehouse-list__search-bar' label="Search" hideLabel={true} placeholder='Search...' type='search'/>
 						<Button className='warehouse-list__add-warehouse' to ='/warehouses/add' variant='primary' >+ Add New Warehouse</Button>
 					</div>
 				</div>
