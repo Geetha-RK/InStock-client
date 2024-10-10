@@ -76,7 +76,6 @@
 		&__edit-icon {
 			position: unset;
 			translate: unset;
-			// display: block;
 		}
 		&__edit-text {
 			@include undo-screen-reader-only;

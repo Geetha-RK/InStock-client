@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import MainCard from "../../components/MainCard/MainCard";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import Link from "../../components/Link/Link";
+import InventoryStatus from "../../components/InventoryStatus/InventoryStatus";
 import editSrc from "../../assets/icons/edit-white-24px.svg";
 
 function InventoryItemPage() {
@@ -63,7 +64,7 @@ function InventoryItemPage() {
 				{error && "Error"}
 				{!error && (item ? item.item_name : "Loading...")}
 			</PageHeader>
-			<Link to={item ? `/inventory/edit/${item.id}` : undefined} className={`${block}__edit`}>
+			<Link to={`/inventory/edit/${itemID}`} className={`${block}__edit`}>
 				<img className={`${block}__edit-icon`} alt="" src={editSrc} />
 				<span className={`${block}__edit-text`}>Edit</span>
 			</Link>
@@ -89,7 +90,9 @@ function InventoryItemPage() {
 							{readableFieldTitle(k)}
 						</dt>
 						<dd className={`${block}__field-value`}>
-							{val}
+							{k === "status"
+								? <InventoryStatus status={val}/>
+								: val}
 						</dd>
 					</div>
 
