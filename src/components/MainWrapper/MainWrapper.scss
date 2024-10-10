@@ -1,7 +1,9 @@
 @use "../../styles/partials/global" as *;
 
 .main-wrapper {
-	--header-overlap: #{pxToRem(93)};
+	--header-overlap: #{pxToRem(63)};
+	border: none;
+	margin: none;
 	width: 100%;
 	// Use a gradient to simulate an overlap of the header and main content
 	background: linear-gradient(
