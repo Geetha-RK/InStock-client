@@ -1,5 +1,6 @@
 import "./WarehouseFormPage.scss";
 import { useNavigate } from "../../hooks/useNavigate";
+import { useGoBack } from "../../hooks/useGoBack";
 import MainCard from "../../components/MainCard/MainCard";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import Input from "../../components/Input/Input";
@@ -25,6 +26,7 @@ function WarehouseFormPage() {
   const block = "warehouse-form-page"; // bem block name
 
   const navigate = useNavigate();
+  const navigateBack = useGoBack("/warehouses");
   const { warehouseID } = useParams(); //Get the warehouse if from URL for edit route
 
   const [values, setValues] = useState(initialValues);
@@ -251,7 +253,7 @@ function WarehouseFormPage() {
         </fieldset>
 
         <div className={`${block}__form-buttons`}>
-          <Button to="/warehouses" variant="secondary">
+          <Button onClick={navigateBack} variant="secondary">
             Cancel
           </Button>
           <Button disabled={isLoading && isEditMode}> {isEditMode ? "Save" : "+ Add Warehouse"}</Button>

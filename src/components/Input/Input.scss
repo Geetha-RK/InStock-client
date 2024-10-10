@@ -6,13 +6,13 @@
 	min-width: pxToRem(184);
 
 	&__label {
+		margin-bottom: $space-0;
 		@extend %f-label;
 		color: $c-instock-black;
 	}
 
 	&__field {
 		display: block;
-		margin-top: $space-0;
 		width: 100%;
 		border: 1px solid $c-cloud;
 		border-radius: $border-radius;
