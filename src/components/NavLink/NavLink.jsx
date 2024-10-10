@@ -13,13 +13,14 @@ import Link from "../Link/Link";
 function NavLink({
 	to,
 	className = (isActive) => `navlink ${isActive ? "navlink--active" : ""}`,
-	activeOnlyWhenExact,
+	mustBeExact = false,
 	children,
 	...rest
 }) {
-	let match = useMatch({
+	const match = useMatch({
 		path: to,
-		exact: activeOnlyWhenExact
+		caseSensitive: false,
+		end: mustBeExact
 	});
 
 	return (
