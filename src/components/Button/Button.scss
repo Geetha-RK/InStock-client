@@ -11,6 +11,7 @@
 	text-align: center;
 	text-decoration: none;
 	cursor: pointer;
+	font-family: $f-titillium-family;
 
 	&--primary {
 		background: $c-instock-indigo;
@@ -37,7 +38,8 @@
 	}
 
 	@include tablet {
-		width: fit-content;
+		width: auto;
 		height: pxToRem(38);
+		flex-shrink: 0;
 	}
 }

@@ -4,13 +4,15 @@ import { useAnnouncementSystem } from './hooks/useAnnouncementSystem';
 import { Route, Routes } from "react-router-dom";
 import Announcement from './components/Announcement/Announcement';
 
-import WarehousePage from './pages/WarehousePage/WarehousePage';
 import Header from './components/Header/Header';
+import MainWrapper from './components/MainWrapper/MainWrapper';
 import WarehouseListPage from './pages/WarehouseListPage/WarehouseListPage';
 import WarehouseFormPage from './pages/WarehouseFormPage/WarehouseFormPage';
+import WarehousePage from './pages/WarehousePage/WarehousePage';
 import InventoryListPage from './pages/InventoryListPage/InventoryListPage';
 import InventoryFormPage from './pages/InventoryFormPage/InventoryFormPage';
 import InventoryItemPage from './pages/InventoryItemPage/InventoryItemPage';
+import Footer from './components/Footer/Footer';
 
 /*
 Do NOT use react router's normal `Link` or `NavLink`components.
@@ -46,9 +48,9 @@ function App() {
 		<AnnouncementContext.Provider value={{setAnnouncement, refocusOnMain, userNavigated, canGoBack}}>
 
 			{/* Header component and other content that needs to be above the main content can go here */}
-			<Header></Header>
+			<Header/>
 
-			<main className="main" ref={mainWrapperRef}>
+			<MainWrapper ref={mainWrapperRef}>
 				<Routes>
 					<Route path="/"
 						element={<WarehouseListPage/>}/>
@@ -70,8 +72,9 @@ function App() {
 					<Route path="/inventory/edit/:itemID"
 						element={<InventoryFormPage/>} />
 				</Routes>
-			</main>
+			</MainWrapper>
 
+			<Footer />
 			{/* Footer component and other content that needs to be below the main content can go here */}
 
 		</AnnouncementContext.Provider>

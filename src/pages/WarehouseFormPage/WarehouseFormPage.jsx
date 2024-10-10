@@ -5,7 +5,7 @@ import PageHeader from "../../components/PageHeader/PageHeader";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
@@ -31,50 +31,84 @@ function WarehouseFormPage() {
   const [isEditMode, setIsEditMode] = useState(false); //Track if it's an edit or add mode
   const [isLoading, setIsLoading] = useState(true);
 
+  // Track if the component is mounted or not, so we know if we can update
+  // state after asynchronous operations or not.
+  const isMounted = useRef(false);
   useEffect(() => {
+    isMounted.current = true;
+    return () => isMounted.current = false;
+  }, [])
+
+  useEffect(() => {
+    // Pass this object to the axios request, and we can use it to cancel the
+    // response at any time. We do this so we can ignore requests that are still
+    // running when this component unmounts, because we no longer need them.
+    const abortController = new AbortController();
+
+    // Function to fetch warehouse details when editing
+    // Moving this inside the useEffect ensures that react does not get stuck in an infinite rendering loop
+    async function fetchWarehouseDetails() {
+      setIsLoading(true); // Set loading to true before fetching
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/warehouses/${warehouseID}`,
+          { signal: abortController.signal }
+        );
+        setValues(response.data); // Update the form with the fetched data
+        setIsLoading(false); // Set loading to false after fetch attempt
+      } catch (error) {
+        // Make sure to ignore errors from the abort controller canceling; we
+        // only do that when we don't need the request anymore.
+        if (error.name !== "CanceledError") {
+          handleFetchError(error); // Handle any errors
+        }
+      }
+    }
+
     if (warehouseID) {
       setIsEditMode(true); // It's in edit mode if warehouseID exists
-      fetchWarehouseDetails(warehouseID);
+      fetchWarehouseDetails();
     } else {
-		setIsLoading(false); // If not editing, set loading to false immediately
-	}
+      setIsLoading(false); // If not editing, set loading to false immediately
+    }
+
+    // Return a clean up function; when this component unmounts, it will cancel the request for warehouse details if its still running.
+    return () => abortController.abort();
   }, [warehouseID]);
 
-  // Function to fetch warehouse details when editing
-  async function fetchWarehouseDetails(id) {
-	setIsLoading(true); // Set loading to true before fetching
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/warehouses/${id}`
-      );
-      console.log("response:", response);
-      setValues(response.data); // Update the form with the fetched data
-    } catch (error) {
-      	handleFetchError(error); // Handle any errors
-    } finally {
-      	setIsLoading(false); // Set loading to false after fetch attempt
-    }
-  }
-
   // Improved error handling
-  function handleFetchError(error) {
+  // If a toastId is given, it will update that toast. If no toastId is given,
+  // it will create a new toast.
+  function handleFetchError(error, toastId = null) {
+    let errorMessage;
     if (error.response) {
       const status = error.response.status;
       if (status === 404) {
-        toast.error("Warehouse not found. Please check the warehouse ID.");
+        errorMessage = "Warehouse not found. Please check the warehouse ID.";
       } else if (status === 400) {
-        toast.error("Invalid input. Please check the data you've entered.");
+        errorMessage = "Invalid input. Please check the data you've entered.";
       } else {
-        toast.error(
-          `An error occurred: ${error.response.data.message || "Unknown error"}`
-        );
+        errorMessage =
+          `An error occurred: ${error.response.data.message || "Unknown error"}`;
       }
     } else if (error.request) {
-      toast.error(
-        "No response from the server. Please check your network connection."
-      );
+      errorMessage =
+        "No response from the server. Please check your network connection.";
     } else {
-      toast.error(`Request error: ${error.message}`);
+      errorMessage = `Request error: ${error.message}`;
+    }
+    // display the error message
+    if (isMounted.current) {
+      if (toastId) {
+        toast.update(toastId, {
+          render: errorMessage,
+          type: "error",
+          isLoading: false,
+          autoClose: 5000
+        });
+      } else {
+        toast.error(errorMessage);
+      }
     }
   }
   /** Updates form state when user interacts with fields. */
@@ -86,34 +120,37 @@ function WarehouseFormPage() {
   /** Submits form data to API */
   async function handleSubmit(ev) {
     ev.preventDefault();
+    let toastId,
+      successMessage;
 
     try {
       if (isEditMode) {
+        toastId = toast.loading("Updating warehouse...");
         // PUT request for editing an existing warehouse
-        const request = axios.put(
+        await axios.put(
           `${import.meta.env.VITE_API_URL}/api/warehouses/${warehouseID}`,
           values
         );
-        toast.promise(request, {
-          pending: "Updating warehouse...",
-          success: "Warehouse updated!",
-          error: "Failed to update warehouse.",
-        });
+        successMessage = "Warehouse updated!";
       } else {
-        const request = axios.post(
+        toastId = toast.loading("Submitting new warehouse...");
+        await axios.post(
           `${import.meta.env.VITE_API_URL}/api/warehouses`,
           values
         );
-        toast.promise(request, {
-          pending: "Submitting form...",
-          success: "Warehouse created!",
-          error: "Failed to create warehouse.",
+        successMessage = "Warehouse created!";
+      }
+      if (isMounted.current) {
+        toast.update(toastId, {
+          render: successMessage,
+          type: "success",
+          isLoading: false,
+          autoClose: 5000,
+          onClose: () => navigate("/warehouses")
         });
       }
-      await request;
-      setTimeout(() => navigate("/warehouses"), 5000);
     } catch (error) {
-		handleFetchError(error); 
+      handleFetchError(error, toastId);
     }
   }
 
