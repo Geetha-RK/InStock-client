@@ -13,17 +13,20 @@ import Link from "../Link/Link";
 function NavLink({
 	to,
 	className = (isActive) => `navlink ${isActive ? "navlink--active" : ""}`,
-	activeOnlyWhenExact,
+	mustBeExact = false,
+	"aria-current": ariaCurrentProp = "page",
 	children,
 	...rest
 }) {
-	let match = useMatch({
+	const match = useMatch({
 		path: to,
-		exact: activeOnlyWhenExact
+		caseSensitive: false,
+		end: mustBeExact
 	});
+	const ariaCurrent = (match ? ariaCurrentProp : undefined);
 
 	return (
-		<Link {...rest} to={to} className={className(match)}>
+		<Link {...rest} to={to} className={className(match)} aria-current={ariaCurrent}>
 			{children}
 		</Link>
 	);
