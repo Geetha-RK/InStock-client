@@ -14,6 +14,7 @@ function NavLink({
 	to,
 	className = (isActive) => `navlink ${isActive ? "navlink--active" : ""}`,
 	mustBeExact = false,
+	"aria-current": ariaCurrentProp = "page",
 	children,
 	...rest
 }) {
@@ -22,9 +23,10 @@ function NavLink({
 		caseSensitive: false,
 		end: mustBeExact
 	});
+	const ariaCurrent = (match ? ariaCurrentProp : undefined);
 
 	return (
-		<Link {...rest} to={to} className={className(match)}>
+		<Link {...rest} to={to} className={className(match)} aria-current={ariaCurrent}>
 			{children}
 		</Link>
 	);
