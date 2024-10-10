@@ -83,21 +83,23 @@ function WarehousePage() {
 			</div>
 		  </div>
 		  <div className={`${block}__details`}>
-				<div>
-					<label>WAREHOUSE ADDRESS:</label>
-					<p>{values.address}</p>
-					<p>{values.city},{values.country}</p>
+				<div className={`${block}__container`}>
+					<label className={`${block}__label`}>WAREHOUSE ADDRESS:</label>
+					<div  className={`${block}__address-container`}>
+						<p className={`${block}__values`}>{values.address},</p> 
+						<p className={`${block}__values`}>{values.city}, {values.country}</p>
+					</div>
 				</div>
-				<div>
-					<div>
-						<label>CONTACT NAME:</label>
-						<p>{values.contact_name}</p>
-						<p>{values.contact_position}</p>
+				<div className={`${block}__contact-container`}>
+					<div >
+						<label className={`${block}__label`}>CONTACT NAME:</label>
+						<p className={`${block}__values`}>{values.contact_name}</p>
+						<p className={`${block}__values`}>{values.contact_position}</p>
 					</div>
 					<div>
-						<label>CONTACT INFORMATION:</label>
-						<p>{values.contact_phone}</p>
-						<p>{values.contact_email}</p>
+						<label className={`${block}__label`}>CONTACT INFORMATION:</label>
+						<p className={`${block}__values`}>{values.contact_phone}</p>
+						<p className={`${block}__values`}>{values.contact_email}</p>
 					</div>
 				</div>
 		  </div>
