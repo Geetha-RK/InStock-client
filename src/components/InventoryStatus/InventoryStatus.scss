@@ -1,0 +1,21 @@
+@use "../../styles/partials/global" as *;
+
+.status-tag {
+	display: inline-block;
+	width: fit-content;
+	padding: $space-0 $space-1;
+	border-radius: $border-radius;
+	@extend %f-label;
+	text-transform: uppercase;
+	background: rgba($c-graphite, .07);
+	color: $c-graphite;
+
+	&[data-status="In Stock"] {
+		background: rgba($c-green, .07);
+		color: $c-green;
+	}
+	&[data-status="Out of Stock"] {
+		background: rgba($c-red, .07);
+		color: $c-red;
+	}
+}
