@@ -1,9 +1,11 @@
+import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./InventoryItemPage.scss";
 import { useEffect, useRef, useState } from "react";
 import MainCard from "../../components/MainCard/MainCard";
 import PageHeader from "../../components/PageHeader/PageHeader";
-import axios from "axios";
+import Link from "../../components/Link/Link";
+import editSrc from "../../assets/icons/edit-white-24px.svg";
 
 function InventoryItemPage() {
 	const { itemID } = useParams();
@@ -61,6 +63,10 @@ function InventoryItemPage() {
 				{error && "Error"}
 				{!error && (item ? item.item_name : "Loading...")}
 			</PageHeader>
+			<Link to={item ? `/inventory/edit/${item.id}` : undefined} className={`${block}__edit`}>
+				<img className={`${block}__edit-icon`} alt="" src={editSrc} />
+				<span className={`${block}__edit-text`}>Edit</span>
+			</Link>
 
 			{(error || !item) && (
 			<div className={`${block}__temporary`}>

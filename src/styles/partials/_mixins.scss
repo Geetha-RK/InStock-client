@@ -15,6 +15,15 @@
 	white-space: nowrap;
 	width: 1px;
 }
+@mixin undo-screen-reader-only {
+	clip: unset;
+	clip-path: unset;
+	height: unset;
+	overflow: unset;
+	position: unset;
+	white-space: unset;
+	width: unset;
+}
 
 /// At the tablet breakpoint and above, use padding to clamp the width of an
 /// element's inner content so it's never wider than the maximum width allowed
