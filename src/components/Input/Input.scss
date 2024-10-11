@@ -1,6 +1,7 @@
 @use "../../styles/partials/global" as *;
 
 .input {
+	appearance: none;
 	display: block;
 	width: 100%;
 	min-width: pxToRem(184);
@@ -32,6 +33,9 @@
 		}
 		&--invalid {
 			border-color: $c-red;
+		}
+		&:disabled {
+			background: rgba($c-cloud, .5);
 		}
 	}
 	&__hidden {

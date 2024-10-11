@@ -28,8 +28,8 @@ function Input({ type = "text", label, hideLabel = false, description = "", onCh
 		// set focus to first invalid field in the containing form/search element
 		const myForm = ev.target.closest("form, search");
 		const firstInvalidField =
-			myForm.querySelector("input:invalid, textarea:invalid" );
-		firstInvalidField.focus();
+			myForm?.querySelector("input:invalid, textarea:invalid" );
+		firstInvalidField?.focus();
 
 		onInvalid?.(ev);
 	}
