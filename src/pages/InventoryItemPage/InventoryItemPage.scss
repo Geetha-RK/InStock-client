@@ -1,0 +1,102 @@
+@use "../../styles/partials/global" as *;
+
+.item-detail-page {
+	position: relative;
+	color: $c-instock-black;
+
+	// error & load states
+	&__temporary {
+		padding-block: $space-4;
+		// to reduce layout shift after data load
+		height: $space-4*2 + pxToRem(200);
+		@extend %f-body-large;
+		text-align: center;
+	}
+	&__error-message {
+		@extend %f-body-small;
+	}
+
+	// main state
+	&__edit {
+		position: absolute;
+		top: $space-4;
+		right: $space-3;
+		min-width: fit-content;
+		width: pxToRem(36);
+		aspect-ratio: 1;
+		background: $c-instock-indigo;
+		border-radius: $border-radius;
+		@extend %f-button;
+		text-decoration: none;
+		color: $c-white;
+	}
+	&__edit-icon {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		translate: -50% -50%;
+		width: pxToRem(20);
+		aspect-ratio: 1;
+	}
+	&__edit-text {
+		@include screen-reader-only;
+	}
+	&__content {
+		margin: 0;
+		padding: $space-2 $space-3;
+	}
+	&__field {
+		display: block;
+		width: 100%;
+		padding-bottom: $space-2;
+		&--status, &--quantity {
+			display: inline-block;
+			width: 50%;
+		}
+	}
+	&__field-title {
+		@extend %f-label;
+		text-transform: uppercase;
+		color: $c-slate;
+	}
+	&__field-value {
+		margin: 0;
+		@extend %f-body-large;
+	}
+
+	@include tablet {
+		&__edit {
+			right: $space-4;
+			display: flex;
+			align-items: center;
+			gap: $space-0;
+			padding: $space-1 $space-2;
+			aspect-ratio: unset;
+		}
+		&__edit-icon {
+			position: unset;
+			translate: unset;
+		}
+		&__edit-text {
+			@include undo-screen-reader-only;
+		}
+		&__content {
+			padding: $space-3 $space-4;
+			columns: 2;
+			column-gap: $space-10;
+			column-rule: 1px solid $c-cloud;
+		}
+		&__field:nth-child(odd) {
+			padding-bottom: $space-4;
+		}
+	}
+
+	@include desktop {
+		&__edit {
+			right: $space-5;
+		}
+		&__content {
+			padding-inline: $space-5;
+		}
+	}
+}
