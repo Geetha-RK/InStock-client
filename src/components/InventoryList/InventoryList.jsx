@@ -8,18 +8,19 @@ import Input from '../../components/Input/Input'
 import MainCard from '../../components/MainCard/MainCard'
 import Link from "../Link/Link";
 
-function InventoryList({data, warehouseMap}) {
+function InventoryList({ data, warehouseMap, showFlag }) {
 
 	return (
         <MainCard className='inventory-component'>
             <section className='inventory-list'>
-            <div className='inventory-list__header'>
+            {showFlag && (<div className='inventory-list__header'>
 					<h1 className='inventory-list__title'>Inventory</h1>
 					<div className='inventory-list__inputs'>
 						<Input inputClassName='inventory-list__search-bar' label="Search" hideLabel={true} placeholder='Search...' type='search'/>
 						<Button className='inventory-list__add-inventory' to ='/add' variant='primary' >+ Add New Item</Button>
 					</div>
 				</div>
+			)}
                 <div className='inventory-list__records-container'>
                     <div className='inventory-list__label'>
 						<ul className='inventory-list__label-list'>
@@ -32,12 +33,14 @@ function InventoryList({data, warehouseMap}) {
 							<li className='inventory-list__label-item'>STATUS
 								<img src={sortIcon} className='inventory-list__label-sort' />
 							</li>
-							<li className='inventory-list__label-item'>QTY
+							
+							<li className='inventory-list__label-item'>{showFlag ? 'QTY' : 'QUANTITY'}
 								<img src={sortIcon} className='inventory-list__label-sort' />
 							</li>
+							{showFlag && (
                             <li className='inventory-list__label-item'>WAREHOUSE
 								<img src={sortIcon} className='inventory-list__label-sort' />
-							</li>
+							</li>)}
 							<li className='inventory-list__label-item inventory-list__label-item--actions'>ACTIONS
 							</li>
 						</ul>
@@ -66,10 +69,11 @@ function InventoryList({data, warehouseMap}) {
 											<h4 className='inventory-record__label'>QTY</h4>
 											<p className='inventory-record__info-details'>{item.quantity}</p>
 										</li>
+										{showFlag && (
                                         <li className='inventory-record__list-item inventory-record__list-item--warehouse'>
 											<h4 className='inventory-record__label'>WAREHOUSE</h4>
 											<p className='inventory-record__info-details'>{warehouseMap[item.warehouse_id] || 'Unknown Warehouse'}</p>
-										</li>
+										</li>)}
 										<li className='inventory-record__actions'>
 											<Link to=''><img className='inventory-record__delete' src={deleteIcon} alt='delete icon' /></Link>
 											<Link to={`/inventory/edit/${item.id}`}><img className='inventory-record__edit' src={editIcon} alt='edit icon' /></Link>

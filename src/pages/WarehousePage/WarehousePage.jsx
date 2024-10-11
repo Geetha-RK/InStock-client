@@ -1,6 +1,7 @@
 import "./WarehousePage.scss";
 import MainCard from "../../components/MainCard/MainCard";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import InventoryList from "../../components/InventoryList/InventoryList";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
@@ -25,10 +26,15 @@ function WarehousePage() {
   const { warehouseID } = useParams(); //Get the warehouse id
   const navigate = useNavigate();
   const [values, setValues] = useState(initialValues);
+  const [inventoryList,setInventoryList] = useState([]);
+  const [warehouseMap,setWarehouseMap] = useState({});
+  const [isLoading,setIsLoading] = useState(true);
+  const [isError,setIsError] = useState(false);
 
   useEffect(() => {
     if (warehouseID) {
       fetchWarehouseDetails(warehouseID);
+      fetchWarehouseInventory(warehouseID);
     }
   }, [warehouseID]);
 
@@ -40,10 +46,27 @@ function WarehousePage() {
       );
       //   console.log("response:", response);
       setValues(response.data); // Update the table with fetched warehouse data
+      setWarehouseMap({ [response.data.id]: response.data.warehouse_name });
     } catch (error) {
       handleFetchError(error); // Handle any errors
     }
   }
+
+  // Function to fetch inventory for the warehouse
+  async function fetchWarehouseInventory(id) {
+    try {
+        const response = await axios.get(
+            `${import.meta.env.VITE_API_URL}/api/warehouses/${id}/inventories`
+        );
+        console.log("Inventories for the warehouse:",response.data);
+        setInventoryList(response.data); 
+        setIsLoading(false); 
+    } catch (error) {
+        console.error(error);
+        setIsError(true); 
+        handleFetchError(error);
+    }
+}
 
   // Improved error handling
   function handleFetchError(error) {
@@ -68,7 +91,7 @@ function WarehousePage() {
   }
 
   const handleEditClick = () => {
-		navigate(`/warehouses/edit/${values.id}`); // Adjust the path as needed
+		navigate(`/warehouses/edit/${values.id}`); 
 	};
 
   return (
@@ -103,6 +126,15 @@ function WarehousePage() {
 					</div>
 				</div>
 		  </div>
+      {/* Render Inventory List for the specific warehouse */}
+      {isLoading ? (
+                <p>Loading inventory...</p>
+            ) : isError ? (
+                <p>Sorry, there was an error fetching the inventory list.</p>
+            ) : (
+                <InventoryList data={inventoryList} warehouseMap={warehouseMap} showFlag={false} />
+            )}
+      <ToastContainer />
 	</MainCard>
   );
 }
