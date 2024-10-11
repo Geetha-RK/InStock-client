@@ -1,12 +1,6 @@
-// @use '../../styles/partials/mixins' as *;
-// @use '../../styles/partials/variables' as *;
-// @use '../../styles/partials/breakpoints' as *;
-// @use '../../styles/partials/functions' as *;
-// @use '../../styles/partials/typography' as *;
 @use "../../styles/partials/global" as *;
 
-
-.warehouse-list {
+.inventory-list {
 
     &__title {
         @extend %f-page-header;
@@ -29,6 +23,7 @@
     &__inputs {
         display: flex;
         flex-direction: column;
+        margin: $space-2 0 $space-3 0;
 
         @include tablet {
             flex-direction: row;
@@ -86,7 +81,7 @@
             list-style-type: none;
             display: flex;
             justify-content: space-between;
-            gap: $space-5;
+            gap: $space-3;
             width: 100%;
             margin: 0;
         }
@@ -111,7 +106,7 @@
     }
 }
 
-.warehouse-record {
+.inventory-record {
     padding: $space-2 $space-3;
     border-bottom:1px solid $c-cloud;
     display: flex;
@@ -155,26 +150,38 @@
         list-style-type: none;
         width: 50%;
 
-        @include tablet {
-            flex:1;
-        }
-
-        &--warehouse {
+        &--inventory {
             order:1
         }
 
-        &--address {
+        &--category {
             order:3;
 
+            @include tablet {
+                order:2;
+            }
+
         }
 
-        &--contact-name {
+        &--status {
             order:2;
+
+            @include tablet {
+                order:3;
+            }
         }
 
-        &--contact-info {
+        &--qty {
             order:4;
 
+        }
+        &--warehouse {
+            order:5;
+            margin-left:auto;
+        }
+
+        @include tablet {
+            flex:1;
         }
     }
 
@@ -204,12 +211,28 @@
                     }
                 }
         }
+
+        &--status {
+            display: inline-block;
+            padding: 0.3125rem 0.5rem;
+            border-radius: pxToRem(20px);
+        }
+
+        &--in-stock {
+            background-color:rgba(21, 132, 99, 0.07);
+            color:$c-green;
+        }
+
+        &--out-of-stock {
+            background-color:rgba(201, 69, 21, 0.07);
+            color:$c-red;
+        }
     }
 
     &__actions {
         display:flex;
         justify-content: space-between;
-        order:5;
+        order:6;
         width:100%;
 
         @include tablet {
