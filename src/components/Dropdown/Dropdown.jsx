@@ -64,7 +64,7 @@ function Dropdown({ label, defaultValue, value, onChange, onInvalid, children, .
 					onInvalid={handleInvalid}
 					value={value}
 					defaultValue={defaultValue}>
-						<option>Please select</option>
+						<option value="">Please select</option>
 						{children}
 					</select>
 			</div>
