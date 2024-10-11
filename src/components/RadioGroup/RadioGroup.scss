@@ -1,0 +1,19 @@
+@use "../../styles/partials/global" as *;
+
+.radio-group {
+	display: flex;
+	flex-flow: row wrap;
+	row-gap: $space-0;
+	border: 0;
+	min-width: 0;
+	padding: 0;
+	&__legend {
+		float: left; // necessary to position the label correctly
+		margin: 0;
+		width: 100%;
+		padding: 0;
+		@extend %f-label;
+		color: $c-instock-black;
+	}
+}
+
