@@ -7,46 +7,8 @@ import Button from '../../components/Button/Button'
 import Input from '../../components/Input/Input'
 import MainCard from '../../components/MainCard/MainCard'
 import Link from "../Link/Link";
-import axios from "axios";
-import { useState, useEffect } from "react";
 
-function InventoryList({data}) {
-
-    const [warehouseList, setWarehouseList] = useState([]);
-    const [warehouseMap, setWarehouseMap] = useState({});
-    const [isError, setIsError] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-	const url = import.meta.env.VITE_API_URL;
-
-    useEffect(() => {
-        const getWarehouseList = async () => {
-            try {
-                const response = await axios.get(`${url}/api/warehouses/`);
-                setWarehouseList(response.data);
-                setIsLoading(false);
-                
-                const map = {};
-                response.data.forEach(warehouse => {
-                    map[warehouse.id] = warehouse.warehouse_name;
-                });
-                setWarehouseMap(map);
-            } catch (error) {
-                setIsError(true);
-                console.error("Error fetching warehouse details:", error);
-            }
-        };
-
-        getWarehouseList();
-    }, []);
-
-    
-    if(isError) {
-        return <h1>Sorry, there was some error in fetching the list</h1>
-    }
-
-    if(isLoading) {
-        return <h1>Loading list...</h1>
-    }
+function InventoryList({data, warehouseMap}) {
 
 	return (
         <MainCard className='inventory-component'>
