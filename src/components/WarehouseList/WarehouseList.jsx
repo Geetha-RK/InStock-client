@@ -3,13 +3,13 @@ import deleteIcon from '../../assets/icons/delete_outline-24px.svg';
 import editIcon from '../../assets/icons/edit-24px.svg';
 import sortIcon from '../../assets/icons/sort-24px.svg';
 import viewDetailsIcon from '../../assets/icons/chevron_right-24px.svg';
-import Button from '../../components/Button/Button'
-import Input from '../../components/Input/Input'
-import MainCard from '../../components/MainCard/MainCard'
+import MainCard from "../MainCard/MainCard";
+import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
 import Link from "../Link/Link";
+import IconButton from "../IconButton/IconButton";
 
-function WarehouseList({data}) {
-	
+function WarehouseList({ data, deleteItemFn }) {
 	return (
 		<MainCard className='warehouse-component'>
 			<section className='warehouse-list'>
@@ -64,14 +64,19 @@ function WarehouseList({data}) {
 											<p className='warehouse-record__info-details'>{`${item.contact_phone} ${item.contact_email}`}</p>
 										</li>
 										<li className='warehouse-record__actions'>
-											<Link to=''><img className='warehouse-record__delete' src={deleteIcon} alt='delete icon' /></Link>
-											<Link to={`/warehouses/edit/${item.id}`}><img className='warehouse-record__edit' src={editIcon} alt='edit icon' /></Link>
+											<IconButton
+												text={`Delete ${item.warehouse_name}`}
+												className="warehouse-record__delete"
+												iconSrc={deleteIcon}
+												onClick={() => deleteItemFn(item)}/>
+											<Link to={`/warehouses/edit/${item.id}`}>
+												<img className='warehouse-record__edit' src={editIcon} alt={`Edit ${item.warehouse_name}`} />
+											</Link>
 										</li>
 									</ul>
 							</article>
 						)
-					})
-				}
+					})}
 				</div>
 			</section>
 		</MainCard>
