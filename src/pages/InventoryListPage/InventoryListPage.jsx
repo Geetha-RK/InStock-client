@@ -1,6 +1,6 @@
 import InventoryList from "../../components/InventoryList/InventoryList.jsx";
 import "./InventoryListPage.scss";
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from "react-toastify";
 import Modal from "../../components/Modal/Modal.jsx";
@@ -16,17 +16,26 @@ function InventoryListPage() {
 	const [modalOpen, setModalOpen] = useState(false),
         [modalItem, setModalItem] = useState(null);
 
+    // Track if the component is mounted or not, so we know if we can update
+    // state after asynchronous operations or not.
+    const isMounted = useRef(false);
+    useEffect(() => {
+        isMounted.current = true;
+        return () => isMounted.current = false;
+    }, []);
+
     const fetchData = useCallback(async () => {
         setIsLoading(true);
         setIsError(false);
         const getInventoriesList = async () => {
             try {
                 const {data} = await axios.get(`${url}/api/inventories/`);
+                if (!isMounted.current) { return; }
                 setInventoriesList(data);
             } catch (error){
                 console.error(error);
+                if (!isMounted.current) { return; }
                 setIsError(true);
-                console.log(`Could not fetch inventories list ${error}`)
             }
         };
         const getWarehouseList = async () => {
@@ -40,7 +49,8 @@ function InventoryListPage() {
                 setWarehouseMap(map);
             } catch (error) {
                 console.error(error);
-                console.error("Error fetching warehouses name:", error);
+                if (!isMounted.current) { return; }
+                setIsError(true);
             }
         };
         await Promise.all([getInventoriesList(), getWarehouseList()]);
@@ -60,10 +70,12 @@ function InventoryListPage() {
         if (!id) { return; }
         try {
             await axios.delete(`${url}/api/inventories/${id}`);
+			if (!isMounted.current) { return; }
             toast.success("Item deleted.");
             fetchData();
         } catch (error) {
             console.error(error);
+			if (!isMounted.current) { return; }
 			let errorMessage;
 			if (error.response) {
 				if (error.response.status === 404) {
