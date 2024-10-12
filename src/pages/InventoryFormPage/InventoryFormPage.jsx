@@ -18,7 +18,8 @@ const initialValues = {
 	description: "",
 	category: "",
 	status: "",
-	warehouse: "",
+	quantity: "",
+	warehouse_id: "",
   };
 
 function InventoryFormPage() {
@@ -31,10 +32,15 @@ function InventoryFormPage() {
 	const [isEditMode, setIsEditMode] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [values, setValues] = useState(initialValues);
-	// const [status, setStatus] = useState('');
 	const [warehouseList, setWarehouseList] = useState([]);
 	const [categories, setCategories] = useState([]);
 	const [isError, setIsError] = useState(false);
+
+	const isMounted = useRef(false);
+  		useEffect(() => {
+    	isMounted.current = true;
+    	return () => isMounted.current = false;
+  	}, [])
 
 
 	const handleInputChange = (event) => {
@@ -45,30 +51,37 @@ function InventoryFormPage() {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		let toastId, successMessage;
-		console.log(event.target.value);
-		console.log(values);
+		if(values.status === "Out of Stock") {
+			values.quantity = 0;
+		}
 
 		try {
 			toastId = toast.loading("Submitting new inventory...");
 			await axios.post(`${url}/api/inventories`, values);
+			if (isMounted.current) {
+			toast.update(toastId, {
+				render: successMessage,
+				type: "success",
+				isLoading: false,
+				autoClose: 5000,
+				onClose: () => navigate("/inventory")
+			  });
 			successMessage = "Inventory created!";
+		}
 		} catch (error) {
 			console.log(error);
 		}
 	}
-
 
 	const getWarehouseList = useCallback(async () => {
         setIsLoading(true);
         setIsError(false);
         try {
             const {data} = await axios.get(`${url}/api/warehouses/`);
-            // if (!isMounted.current) { return; }
             setWarehouseList(data);
             setIsLoading(false);
         } catch (error){
             console.log(`Could not fetch warehouse list ${error}`);
-            // if (!isMounted.current) { return; }
             setIsError(true);
         }
     }, []);
@@ -77,27 +90,26 @@ function InventoryFormPage() {
         getWarehouseList();
     }, [getWarehouseList]);
 
-	useEffect(() => {
-        const getInventoriesList = async () => {
-            try {
-                const {data} = await axios.get(`${url}/api/inventories/category`);
-				console.log(data);
-                setCategories(data);
-                setIsLoading(false);
-            } catch (error){
-				console.error(error);
-                setIsError(true);
-                console.log(`Could not fetch inventories list ${error}`)
-            }
-            }
-            getInventoriesList(); 
-    }, [])
+	const getInventoriesList = async () => {
+		try {
+			const {data} = await axios.get(`${url}/api/inventories/category`);
+			setCategories(data);
+			setIsLoading(false);
+		} catch (error){
+			console.error(error);
+			setIsError(true);
+			console.log(`Could not fetch inventories list ${error}`)
+		}
+		}
 
+	useEffect(() => {
+            getInventoriesList(); 
+    }, [getInventoriesList])
 
 	return (
 		<MainCard className={block}>
 			<PageHeader hasBackButton={true}>
-        		{isEditMode ? "Edit Inventory" : "Add New Inventory"}
+        		{isEditMode ? "Edit Inventory Item" : "Add New Inventory Item"}
       		</PageHeader>
 			<form className={`${block}__form`} onSubmit={handleSubmit} >
 				<fieldset className={`${block}__form-section`}>
@@ -108,9 +120,11 @@ function InventoryFormPage() {
 						label='Item Name' 
 						placeholder='Item Name' 
 						className={`${block}__form-item-name`}
-						name='item_name' 
+						name='item_name'
+						pattern = '^[A-Za-z\s]*$'
 						value={values['item_name']} 
 						onChange={handleInputChange}
+						description = 'Enter text only'
 						required
 					/>
 
@@ -128,7 +142,7 @@ function InventoryFormPage() {
 					<Dropdown label='Category' name='category' value={values['category']} onChange={handleInputChange} required>
 						{categories.map((item) => {
 							return (
-								<option key={item.id}>{item.category}</option>
+								<option key={item.category}>{item.category}</option>
 							)
 						})}
 					</Dropdown>
@@ -137,12 +151,13 @@ function InventoryFormPage() {
 					<h2 className={`${block}__form-title`}>Item Availability</h2>
 
 					<RadioGroup name='status' label='Status' value={values} onChange={handleInputChange} required>
-						<RadioButton value="In Stock">In Stock</RadioButton>
-						<RadioButton value="Out of Stock">Out of Stock</RadioButton>
+						<RadioButton value="In Stock" >In Stock</RadioButton>
+						<RadioButton value="Out of Stock" >Out of Stock</RadioButton>
 					</RadioGroup>
 					
-					<Input 
-						type='text' 
+					{values.status === "In Stock" && (
+						<Input min='0'
+						type='number' 
 						label='Quantity' 
 						placeholder='Please enter quantity' 
 						className={`${block}__form-quantity`}
@@ -151,15 +166,14 @@ function InventoryFormPage() {
 						onChange={handleInputChange}
 						required
 					/>
+					)}
 
-					<Dropdown label='Warehouse' name='warehouse' value={values['warehouse']} onChange={handleInputChange} required>
-					{
-						warehouseList.map((item) => {
+					<Dropdown label='Warehouse' name='warehouse_id' value={values['warehouse_id']} onChange={handleInputChange} required>
+						{warehouseList.map((item) => {
 							return (
-									<option key={item.id}>{item.warehouse_name}</option>
+									<option key={item.id} value={item.id}>{item.warehouse_name}</option>
 							)
 						})
-
 					}
 					</Dropdown>
 				</fieldset>
@@ -168,7 +182,6 @@ function InventoryFormPage() {
           			<Button onClick={navigateBack} variant="secondary">Cancel</Button>
           			<Button disabled={isLoading && isEditMode}> {isEditMode ? "Save" : "+ Add Item"}</Button>
         		</div>
-
 			</form>
 			<ToastContainer />
 		</MainCard>
