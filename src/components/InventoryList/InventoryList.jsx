@@ -75,8 +75,8 @@ function InventoryList({ data, warehouseMap, showFlag }) {
 											<p className='inventory-record__info-details'>{warehouseMap[item.warehouse_id] || 'Unknown Warehouse'}</p>
 										</li>)}
 										<li className='inventory-record__actions'>
-											<Link to=''><img className='inventory-record__delete' src={deleteIcon} alt='delete icon' /></Link>
-											<Link to={`/inventory/edit/${item.id}`}><img className='inventory-record__edit' src={editIcon} alt='edit icon' /></Link>
+											<Link to=''><img className='inventory-record__delete' src={deleteIcon} alt='delete item' /></Link>
+											<Link to={`/inventory/edit/${item.id}`}><img className='inventory-record__edit' src={editIcon} alt='edit item' /></Link>
 										</li>
 									</ul>
 							</article>

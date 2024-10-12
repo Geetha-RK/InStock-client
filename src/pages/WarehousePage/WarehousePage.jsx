@@ -6,7 +6,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import editicon from "../../assets/icons/edit-white-24px.svg";
 import { useNavigate } from "../../hooks/useNavigate";
 
@@ -44,7 +44,6 @@ function WarehousePage() {
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/warehouses/${id}`
       );
-      //   console.log("response:", response);
       setValues(response.data); // Update the table with fetched warehouse data
       setWarehouseMap({ [response.data.id]: response.data.warehouse_name });
     } catch (error) {
@@ -90,20 +89,16 @@ function WarehousePage() {
     }
   }
 
-  const handleEditClick = () => {
-		navigate(`/warehouses/edit/${values.id}`); 
-	};
-
   return (
     <MainCard className={block}>
 		<div className={`${block}__head`}>
 			<PageHeader hasBackButton={true}>
 				{values.warehouse_name}
 			</PageHeader>
-			<div className={`${block}__edit-box`} onClick={handleEditClick}>
-				<img className={`${block}__edit-icon`} src={editicon} alt="edit-icon"/>
+			<Link to={`/warehouses/edit/${values.id}`} className={`${block}__edit-box`}>
+				<img className={`${block}__edit-icon`} src={editicon} alt="edit item"/>
 				<span className={`${block}__edit-text`}>Edit</span>
-			</div>
+        </Link>
 		  </div>
 		  <div className={`${block}__details`}>
 				<div className={`${block}__container`}>
