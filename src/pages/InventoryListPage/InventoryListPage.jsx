@@ -5,7 +5,6 @@ import axios from 'axios';
 
 function InventoryListPage() {
 	const [inventoriesList, setInventoriesList] = useState([]);
-    const [warehouseList, setWarehouseList] = useState([]);
     const [warehouseMap, setWarehouseMap] = useState({});
 	const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +25,6 @@ function InventoryListPage() {
         const getWarehouseList = async () => {
             try {
                 const response = await axios.get(`${url}/api/warehouses/`);
-                setWarehouseList(response.data);
 
                 const map = {};
                 response.data.forEach(warehouse => {
