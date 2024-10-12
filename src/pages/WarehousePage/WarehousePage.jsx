@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams, Link } from "react-router-dom";
 import editicon from "../../assets/icons/edit-white-24px.svg";
+import { handleFetchError } from "../../utils/error_handling";
 
 const initialValues = {
 	warehouse_name: "",
@@ -42,7 +43,7 @@ function WarehousePage() {
       setValues(response.data); // Update the table with fetched warehouse data
       setWarehouseMap({ [response.data.id]: response.data.warehouse_name });
     } catch (error) {
-      handleFetchError(error); // Handle any errors
+      handleFetchError(error, "Warehouse"); // Handle any errors
     }
   }, []);
 
@@ -52,13 +53,12 @@ function WarehousePage() {
         const response = await axios.get(
             `${import.meta.env.VITE_API_URL}/api/warehouses/${id}/inventories`
         );
-        console.log("Inventories for the warehouse:",response.data);
         setInventoryList(response.data);
         setIsLoading(false);
     } catch (error) {
         console.error(error);
         setIsError(true);
-        handleFetchError(error);
+        handleFetchError(error, "Inventory");
     }
   }, []);
 
@@ -68,28 +68,6 @@ function WarehousePage() {
       fetchWarehouseInventory(warehouseID);
     }
   }, [warehouseID, fetchWarehouseDetails, fetchWarehouseInventory]);
-
-  // Improved error handling
-  function handleFetchError(error) {
-    if (error.response) {
-      const status = error.response.status;
-      if (status === 404) {
-        toast.error("Warehouse not found. Please check the warehouse ID.");
-      } else if (status === 400) {
-        toast.error("Invalid input. Please check the data you've entered.");
-      } else {
-        toast.error(
-          `An error occurred: ${error.response.data.message || "Unknown error"}`
-        );
-      }
-    } else if (error.request) {
-      toast.error(
-        "No response from the server. Please check your network connection."
-      );
-    } else {
-      toast.error(`Request error: ${error.message}`);
-    }
-  }
 
 	function showDeleteModal(item) {
 		setModalItem(item);
@@ -104,21 +82,7 @@ function WarehousePage() {
       fetchWarehouseInventory(warehouseID);
       } catch (error) {
         console.error(error);
-        let errorMessage;
-        if (error.response) {
-          if (error.response.status === 404) {
-            errorMessage = "Item not found.";
-          } else {
-            errorMessage =
-            `Error: ${error.response.data.message || "Unknown error"}`;
-          }
-        } else if (error.request) {
-          errorMessage =
-            "No response from the server. Please check your network connection.";
-        } else {
-          errorMessage = `Error: ${error.message}`;
-        }
-        toast.error(errorMessage);
+        handleFetchError(error, "Item");
       }
   }
 

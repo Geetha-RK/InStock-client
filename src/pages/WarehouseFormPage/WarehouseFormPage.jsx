@@ -10,6 +10,7 @@ import { useState, useEffect, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
+import { handleFetchError } from "../../utils/error_handling";
 
 const initialValues = {
   warehouse_name: "",
@@ -62,7 +63,7 @@ function WarehouseFormPage() {
         // Make sure to ignore errors from the abort controller canceling; we
         // only do that when we don't need the request anymore.
         if (error.name !== "CanceledError") {
-          handleFetchError(error); // Handle any errors
+          handleFetchError(error, "Warehouse"); // Handle any errors
         }
       }
     }
@@ -78,41 +79,6 @@ function WarehouseFormPage() {
     return () => abortController.abort();
   }, [warehouseID]);
 
-  // Improved error handling
-  // If a toastId is given, it will update that toast. If no toastId is given,
-  // it will create a new toast.
-  function handleFetchError(error, toastId = null) {
-    let errorMessage;
-    if (error.response) {
-      const status = error.response.status;
-      if (status === 404) {
-        errorMessage = "Warehouse not found. Please check the warehouse ID.";
-      } else if (status === 400) {
-        errorMessage = "Invalid input. Please check the data you've entered.";
-      } else {
-        errorMessage =
-          `An error occurred: ${error.response.data.message || "Unknown error"}`;
-      }
-    } else if (error.request) {
-      errorMessage =
-        "No response from the server. Please check your network connection.";
-    } else {
-      errorMessage = `Request error: ${error.message}`;
-    }
-    // display the error message
-    if (isMounted.current) {
-      if (toastId) {
-        toast.update(toastId, {
-          render: errorMessage,
-          type: "error",
-          isLoading: false,
-          autoClose: 5000
-        });
-      } else {
-        toast.error(errorMessage);
-      }
-    }
-  }
   /** Updates form state when user interacts with fields. */
   function handleInputChange(ev) {
     const { name, value } = ev.target;
@@ -152,7 +118,7 @@ function WarehouseFormPage() {
         });
       }
     } catch (error) {
-      handleFetchError(error, toastId);
+      handleFetchError(error, "Warehouse", toastId);
     }
   }
 
