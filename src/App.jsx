@@ -66,7 +66,7 @@ function App() {
 						<Route index element={<InventoryListPage/>} />
 						<Route path=":itemID" element={<InventoryItemPage/>} />
 						<Route path="add" element={<InventoryFormPage/>} />
-						<Route path="edit/:itemID" element={<InventoryFormPage/>} />
+						<Route path="edit/:inventoryID" element={<InventoryFormPage/>} />
 					</Route>
 				</Routes>
 			</MainWrapper>
