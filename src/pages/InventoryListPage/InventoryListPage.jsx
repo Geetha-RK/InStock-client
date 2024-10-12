@@ -1,6 +1,6 @@
 import InventoryList from "../../components/InventoryList/InventoryList.jsx";
 import "./InventoryListPage.scss";
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 
 function InventoryListPage() {
@@ -9,30 +9,25 @@ function InventoryListPage() {
     const [warehouseMap, setWarehouseMap] = useState({});
 	const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-	const url = import.meta.env.VITE_API_URL;
 
-	useEffect(() => {
+    const fetchData = useCallback(async () => {
+        const url = import.meta.env.VITE_API_URL;
         const getInventoriesList = async () => {
             try {
                 const {data} = await axios.get(`${url}/api/inventories/`);
                 setInventoriesList(data);
                 setIsLoading(false);
             } catch (error){
-				console.error(error);
+                console.error(error);
                 setIsError(true);
                 console.log(`Could not fetch inventories list ${error}`)
             }
-            }
-            getInventoriesList(); 
-    }, [])
-
-
-    useEffect(() => {
+        };
         const getWarehouseList = async () => {
             try {
                 const response = await axios.get(`${url}/api/warehouses/`);
                 setWarehouseList(response.data);
-                
+
                 const map = {};
                 response.data.forEach(warehouse => {
                     map[warehouse.id] = warehouse.warehouse_name;
@@ -43,10 +38,12 @@ function InventoryListPage() {
                 console.error("Error fetching warehouses name:", error);
             }
         };
-
-        getWarehouseList();
+        await Promise.all([getInventoriesList(), getWarehouseList()]);
     }, []);
 
+	useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
     if(isError) {
         return <h1>Sorry, there was some error in fetching the list</h1>
