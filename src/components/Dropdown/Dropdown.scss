@@ -1,6 +1,6 @@
 @use "../../styles/partials/global" as *;
 
-.input {
+.dropdown {
 	display: block;
 	width: 100%;
 	min-width: pxToRem(184);
@@ -15,27 +15,43 @@
 		appearance: none;
 		display: block;
 		width: 100%;
+		height: pxToRem(36);
 		border: 1px solid $c-cloud;
 		border-radius: $border-radius;
-		padding: $space-2;
+		padding: $space-1 $space-2;
 		background-color: $c-white;
+		font-family: $f-titillium-family;
+		color: $c-slate;
 
-		&:not(textarea) {
-			height: pxToRem(36);
-		}
-		&::placeholder {
-			color: $c-slate;
-			opacity: 1;
-		}
 		&:focus {
 			outline: 1px solid $c-instock-indigo;
 			outline-offset: -1px;
+			color: $c-instock-black;
 		}
 		&--invalid {
 			border-color: $c-red;
 		}
 		&:disabled {
 			background: rgba($c-cloud, .5);
+		}
+	}
+	&__arrow-wrapper {
+		position: relative;
+		&::after {
+			content: "";
+			position: absolute;
+			right: $space-2 + $space-0;
+			top: 50%;
+			translate: 0 -50%;
+			width: pxToRem(10);
+			height: pxToRem(6);
+			background: $c-slate;
+			mask-image: url("../../assets/icons/arrow_drop_down-24px.svg");
+			mask-size: auto;
+			mask-position: center;
+		}
+		&:has(select:focus)::after {
+			background: $c-instock-indigo;
 		}
 	}
 	&__hidden {

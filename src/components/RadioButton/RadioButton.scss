@@ -1,0 +1,53 @@
+@use "../../styles/partials/global" as *;
+
+.radio-button {
+	flex-grow: 1;
+	min-width: fit-content;
+	clear: both; // necessary to position radio group labels correctly
+	display: flex;
+	align-items: center;
+	@extend %f-body-medium;
+	color: $c-instock-black;
+
+	&__input {
+		position: relative;
+		appearance: none;
+		border: 1px solid $c-cloud;
+		border-radius: 50%;
+		width: $space-2;
+		aspect-ratio: 1;
+		margin: 0;
+		margin-right: $space-1;
+
+		&:focus {
+			outline: 1px solid $c-instock-indigo;
+			outline-offset: -1px;
+		}
+		&::before {
+			content: "";
+			position: absolute;
+			background: $c-instock-indigo;
+			border-radius: 50%;
+			top: 50%;
+			left: 50%;
+			translate: -50% -50%;
+			width: $space-1;
+			aspect-ratio: 1;
+			visibility: hidden;
+		}
+		&:checked {
+			border-color: $c-instock-indigo;
+			&::before {
+				visibility: visible;
+			}
+		}
+		&:disabled {
+			border-color: $c-cloud;
+			outline-color: $c-graphite;
+			background: rgba($c-cloud, .5);
+			&::before {
+				background: $c-cloud;
+			}
+		}
+	}
+}
