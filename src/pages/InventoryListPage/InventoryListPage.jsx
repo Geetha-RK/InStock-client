@@ -26,7 +26,6 @@ function InventoryListPage() {
             getInventoriesList(); 
     }, [])
 
-
     useEffect(() => {
         const getWarehouseList = async () => {
             try {
