@@ -136,9 +136,9 @@ function InventoryFormPage() {
 				<fieldset className={`${block}__form-section`}>
 					<h2 className={`${block}__form-title`}>Item Availability</h2>
 
-					<RadioGroup name='status' label='Status' value={values['status']} onChange={handleInputChange} required>
-						<RadioButton value={values['in-stock']} >In Stock</RadioButton>
-						<RadioButton value={values['out-of-stock']}>Out of stock</RadioButton>
+					<RadioGroup name='status' label='Status' value={values} onChange={handleInputChange} required>
+						<RadioButton value="In Stock">In Stock</RadioButton>
+						<RadioButton value="Out of Stock">Out of Stock</RadioButton>
 					</RadioGroup>
 					
 					<Input 

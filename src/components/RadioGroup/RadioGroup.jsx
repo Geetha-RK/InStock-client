@@ -11,8 +11,8 @@ import { Children, cloneElement } from "react";
  *   A label for the entire group of radio buttons.
  * @property {string} value
  *   A **state** which will be set to the selected value.
- * @property {Function} setValue
- *   A **state setter** which will be used to report the selected value.
+ * @property {Function} onChange
+ *   An onChange handler that will be passed down to each radio button.
  * @property {import("react").ReactNode} children
  *   Any amount of `RadioButton` components.
  * @property {boolean} disabled
@@ -20,7 +20,7 @@ import { Children, cloneElement } from "react";
  * @param {RadioGroupProps} props
  */
 function RadioGroup({
-	name, label, value, setValue, children, disabled = undefined
+	name, label, value, onChange, children, disabled = undefined, required = undefined
 }) {
 	// This is passing the name, onChange, and selected state of the group down
 	// to its child components so that they can be controlled
@@ -30,8 +30,9 @@ function RadioGroup({
 			child, {
 				...child.props,
 				name,
-				onChange: setValue,
-				checked: (child.props.value === value)
+				onChange: onChange,
+				checked: (child.props.value === value || child.props.value === value[name]),
+				required: required
 			}
 		)
 	);
