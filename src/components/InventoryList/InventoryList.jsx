@@ -7,8 +7,10 @@ import Button from '../../components/Button/Button'
 import Input from '../../components/Input/Input'
 import MainCard from '../../components/MainCard/MainCard'
 import Link from "../Link/Link";
+import IconButton from "../IconButton/IconButton";
+import InventoryStatus from "../InventoryStatus/InventoryStatus";
 
-function InventoryList({ data, warehouseMap, showFlag }) {
+function InventoryList({ data, warehouseMap, showFlag, deleteItemFn }) {
 
 	return (
         <MainCard className='inventory-component'>
@@ -33,7 +35,7 @@ function InventoryList({ data, warehouseMap, showFlag }) {
 							<li className='inventory-list__label-item'>STATUS
 								<img src={sortIcon} className='inventory-list__label-sort' />
 							</li>
-							
+
 							<li className='inventory-list__label-item'>{showFlag ? 'QTY' : 'QUANTITY'}
 								<img src={sortIcon} className='inventory-list__label-sort' />
 							</li>
@@ -63,7 +65,7 @@ function InventoryList({ data, warehouseMap, showFlag }) {
 										</li>
 										<li className='inventory-record__list-item inventory-record__list-item--status'>
 											<h4 className='inventory-record__label'>STATUS</h4>
-											<p className={`inventory-record__info-details--status ${item.status === 'In Stock' ? 'inventory-record__info-details--in-stock' : 'inventory-record__info-details--out-of-stock'}`}>{item.status.toUpperCase()}</p>
+											<InventoryStatus status={item.status}/>
 										</li>
 										<li className='inventory-record__list-item inventory-record__list-item--qty'>
 											<h4 className='inventory-record__label'>QTY</h4>
@@ -75,7 +77,11 @@ function InventoryList({ data, warehouseMap, showFlag }) {
 											<p className='inventory-record__info-details'>{warehouseMap[item.warehouse_id] || 'Unknown Warehouse'}</p>
 										</li>)}
 										<li className='inventory-record__actions'>
-											<Link to=''><img className='inventory-record__delete' src={deleteIcon} alt='delete item' /></Link>
+											<IconButton
+												text={`Delete ${item.warehouse_name}`}
+												className="inventory-record__delete"
+												iconSrc={deleteIcon}
+												onClick={() => deleteItemFn(item)}/>
 											<Link to={`/inventory/edit/${item.id}`}><img className='inventory-record__edit' src={editIcon} alt='edit item' /></Link>
 										</li>
 									</ul>
