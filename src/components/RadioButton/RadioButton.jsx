@@ -17,7 +17,7 @@ function RadioButton({ name, value, checked, onChange, children }) {
 				className="radio-button__input"
 				type="radio"
 				value={value}
-				onChange={(ev) => onChange(ev.target.value)}
+				onChange={onChange}
 				name={name}
 				checked={checked} />
 			{children}

@@ -19,7 +19,7 @@ function InventoryList({ data, warehouseMap, showFlag, deleteItemFn }) {
 					<h1 className='inventory-list__title'>Inventory</h1>
 					<div className='inventory-list__inputs'>
 						<Input inputClassName='inventory-list__search-bar' label="Search" hideLabel={true} placeholder='Search...' type='search'/>
-						<Button className='inventory-list__add-inventory' to ='/add' variant='primary' >+ Add New Item</Button>
+						<Button className='inventory-list__add-inventory' to ='add' variant='primary' >+ Add New Item</Button>
 					</div>
 				</div>
 			)}
