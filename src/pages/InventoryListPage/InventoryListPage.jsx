@@ -5,6 +5,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from "react-toastify";
 import Modal from "../../components/Modal/Modal.jsx";
 import "react-toastify/dist/ReactToastify.css";
+import { handleFetchError } from "../../utils/error_handling.js";
 
 function InventoryListPage() {
 	const [inventoriesList, setInventoriesList] = useState([]);
@@ -76,21 +77,7 @@ function InventoryListPage() {
         } catch (error) {
             console.error(error);
 			if (!isMounted.current) { return; }
-			let errorMessage;
-			if (error.response) {
-				if (error.response.status === 404) {
-					errorMessage = "Item not found.";
-				} else {
-					errorMessage =
-					`Error: ${error.response.data.message || "Unknown error"}`;
-				}
-			} else if (error.request) {
-				errorMessage =
-					"No response from the server. Please check your network connection.";
-			} else {
-				errorMessage = `Error: ${error.message}`;
-			}
-			toast.error(errorMessage);
+            handleFetchError(error, "Item");
         }
     }
 

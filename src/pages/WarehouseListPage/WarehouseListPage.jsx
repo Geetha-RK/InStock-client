@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { handleFetchError } from "../../utils/error_handling";
 
 function WarehouseListPage() {
 	const [warehouseList, setWarehouseList] = useState([]);
@@ -57,21 +58,7 @@ function WarehouseListPage() {
 		} catch (error) {
             console.error(error);
 			if (!isMounted.current) { return; }
-			let errorMessage;
-			if (error.response) {
-				if (error.response.status === 404) {
-					errorMessage = "Warehouse not found.";
-				} else {
-					errorMessage =
-					`Error: ${error.response.data.message || "Unknown error"}`;
-				}
-			} else if (error.request) {
-				errorMessage =
-					"No response from the server. Please check your network connection.";
-			} else {
-				errorMessage = `Error: ${error.message}`;
-			}
-			toast.error(errorMessage);
+			handleFetchError(error, "Warehouse");
 		}
 	}
 
