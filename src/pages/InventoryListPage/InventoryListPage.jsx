@@ -52,7 +52,7 @@ function InventoryListPage() {
     }
 
 	return (
-		<InventoryList data={inventoriesList} warehouseMap={warehouseMap}></InventoryList>
+		<InventoryList data={inventoriesList} warehouseMap={warehouseMap} showFlag={true}></InventoryList>
 	);
 }
 
