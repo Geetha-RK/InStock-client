@@ -39,8 +39,8 @@ function WarehouseFormPage() {
   const isMounted = useRef(false);
   useEffect(() => {
     isMounted.current = true;
-    return () => isMounted.current = false;
-  }, [])
+    return () => (isMounted.current = false);
+  }, []);
 
   useEffect(() => {
     // Pass this object to the axios request, and we can use it to cancel the
@@ -88,8 +88,7 @@ function WarehouseFormPage() {
   /** Submits form data to API */
   async function handleSubmit(ev) {
     ev.preventDefault();
-    let toastId,
-      successMessage;
+    let toastId, successMessage;
 
     try {
       if (isEditMode) {
@@ -114,7 +113,7 @@ function WarehouseFormPage() {
           type: "success",
           isLoading: false,
           autoClose: 5000,
-          onClose: () => navigate("/warehouses")
+          onClose: () => navigate("/warehouses"),
         });
       }
     } catch (error) {
@@ -127,8 +126,15 @@ function WarehouseFormPage() {
       <PageHeader hasBackButton={true}>
         {isEditMode ? "Edit Warehouse" : "Add New Warehouse"}
       </PageHeader>
-      <form className={`${block}__form`} onSubmit={handleSubmit} aria-busy={isLoading && isEditMode}>
-        <fieldset className={`${block}__form-section`} disabled={isLoading && isEditMode}>
+      <form
+        className={`${block}__form`}
+        onSubmit={handleSubmit}
+        aria-busy={isLoading && isEditMode}
+      >
+        <fieldset
+          className={`${block}__form-section`}
+          disabled={isLoading && isEditMode}
+        >
           <h2 className={`${block}__form-header`}>Warehouse Details</h2>
 
           <Input
@@ -172,7 +178,10 @@ function WarehouseFormPage() {
           />
         </fieldset>
 
-        <fieldset className={`${block}__form-section`} disabled={isLoading && isEditMode}>
+        <fieldset
+          className={`${block}__form-section`}
+          disabled={isLoading && isEditMode}
+        >
           <h2 className={`${block}__form-header`}>Contact Details</h2>
 
           <Input
@@ -222,7 +231,10 @@ function WarehouseFormPage() {
           <Button onClick={navigateBack} variant="secondary">
             Cancel
           </Button>
-          <Button disabled={isLoading && isEditMode}> {isEditMode ? "Save" : "+ Add Warehouse"}</Button>
+          <Button disabled={isLoading && isEditMode}>
+            {" "}
+            {isEditMode ? "Save" : "+ Add Warehouse"}
+          </Button>
         </div>
       </form>
       <span

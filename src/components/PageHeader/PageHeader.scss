@@ -16,4 +16,12 @@
 		order: -1;
 		color: $c-instock-indigo;
 	}
+
+	@include tablet {
+		padding: $space-4 $space-4 $space-3;
+	}
+
+	@include desktop {
+		padding: $space-4 $space-5 $space-3;
+	}
 }

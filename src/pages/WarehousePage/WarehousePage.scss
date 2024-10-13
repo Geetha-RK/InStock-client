@@ -1,106 +1,108 @@
 @use "../../styles/partials/global" as *;
 
-.warehouse-details-page{
-    &__head{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+.warehouse-details-page {
+  &__head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__edit-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-right: pxToRem(36);
+    position: relative;
+    background-color: $c-instock-indigo;
+    width: pxToRem(36);
+    height: pxToRem(36);
+    top: pxToRem(33);
+    border-radius: pxToRem(20);
+    text-decoration: none;
+
+    @include tablet {
+      width: pxToRem(81);
+      height: pxToRem(38);
+      border-radius: 1.25rem;
+      margin-right: pxToRem(36);
+      padding: $space-1 $space-2;
+      gap: pxToRem(10);
+      background-color: $c-instock-indigo;
+      border: none;
+      cursor: pointer;
+    }
+  }
+  &__edit-icon {
+    width: pxToRem(20);
+    height: pxToRem(20);
+  }
+  &__edit-text {
+    display: none;
+    @extend %f-body-small;
+
+    @include tablet {
+      display: inline;
+      color: $c-white;
+    }
+  }
+  &__label {
+    color: $c-slate;
+    @extend %f-label;
+    width: pxToRem(125);
+    height: pxToRem(18);
+  }
+  &__details {
+    display: flex;
+    flex-direction: column;
+    padding: $space-3;
+    border-top: 1px solid $c-cloud;
+    @include tablet {
+      flex-direction: row;
+      padding: 0 $space-4;
     }
 
-    &__edit-box{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        margin-right:pxToRem(36);
-        position: relative;
-        background-color: $c-instock-indigo;
-        width:pxToRem(36);
-        height: pxToRem(36);
-        top:pxToRem(33);
-        border-radius: pxToRem(20);
-
-        @include tablet{
-            width:pxToRem(81); 
-            height: pxToRem(38); 
-            border-radius: 1.25rem; 
-            margin-right:pxToRem(36);
-            padding: $space-1 $space-2; 
-            gap: pxToRem(10); 
-            background-color: $c-instock-indigo;
-            border: none; 
-            cursor: pointer;
-        }
-    }
-    &__edit-icon{
-        width:pxToRem(20);
-        height:pxToRem(20);
-    }
-    &__edit-text{
-        display: none;
-        @extend %f-body-small;
-
-        @include tablet{
-            display: inline;
-            color:$c-white;
-        }
-    }
-    &__label{
-        color:$c-slate;
-        @extend %f-label;
-        width:pxToRem(125);
-        height:pxToRem(18);
-    }
-    &__details{
-        display: flex;
-        flex-direction: column;
-        padding: $space-3;
-        border-top: 1px solid $c-cloud;
-        @include tablet{
-            flex-direction: row;
-            padding: 0 $space-3;
-            
-        }
-        
-    }
-    &__address-container{
-        width:pxToRem(214);
-        height:pxToRem(44);
-        display: flex;
-
-        @include tablet{
-            flex-direction: column;
-        }
-    }
-    &__container{
-        @include tablet{
-            margin: pxToRem(32);
-        }
-        @include desktop{
-            margin-left:0;
-        }
-    }
-    &__contact-container{
-        display: flex;
-            justify-content: space-between;
-
-        @include tablet{
-            border-left: 1px solid $c-cloud;
-            padding-left: pxToRem(32);
-            margin: pxToRem(32);
-            margin-right: 0;
-            width: -webkit-fill-available;
-        }
-        @include desktop{
-            justify-content: start;
-            gap:pxToRem(160);
-        }
+    @include desktop {
+      padding: 0 $space-5;
 
     }
-    &__values{
-        @extend %f-body-medium;
-        color:$c-instock-black;
-        margin: 0;  
-    }
+  }
+  &__address-container {
+    width: pxToRem(214);
+    height: pxToRem(44);
+    display: flex;
 
+    @include tablet {
+      flex-direction: column;
+    }
+  }
+  &__container {
+    @include tablet {
+      margin: pxToRem(32);
+    }
+    @include desktop {
+      margin-left: 0;
+    }
+  }
+  &__contact-container {
+    display: flex;
+    justify-content: space-between;
+
+    @include tablet {
+      border-left: 1px solid $c-cloud;
+      padding-left: pxToRem(32);
+      margin: pxToRem(32);
+      margin-right: 0;
+      width: -webkit-fill-available;
+    }
+    @include desktop {
+      justify-content: start;
+      gap: pxToRem(160);
+    }
+  }
+  &__values {
+    @extend %f-body-medium;
+    color: $c-instock-black;
+    margin: 0;
+  }
 }

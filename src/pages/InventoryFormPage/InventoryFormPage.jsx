@@ -31,8 +31,8 @@ function InventoryFormPage() {
   const navigate = useNavigate();
   const navigateBack = useGoBack("/inventory");
 
-  const { inventoryID } = useParams(); // get the inventory id from url for edit mode
-  
+  const { inventoryID } = useParams();
+
   const [isEditMode, setIsEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [values, setValues] = useState(initialValues);
@@ -59,31 +59,30 @@ function InventoryFormPage() {
     }
 
     try {
-		if (isEditMode) {
-			toastId = toast.loading("Updating inventory...");
+      if (isEditMode) {
+        toastId = toast.loading("Updating inventory...");
         // PUT request for editing an existing warehouse
         await axios.put(
           `${import.meta.env.VITE_API_URL}/api/inventories/${inventoryID}`,
           values
         );
         successMessage = "Warehouse updated!";
-
-		}else{
-			toastId = toast.loading("Submitting new inventory...");
-			await axios.post(`${url}/api/inventories`, values);
-			successMessage = "Inventory created!";
-		}
-		if (isMounted.current) {
-			toast.update(toastId, {
-			render: successMessage,
-			type: "success",
-			isLoading: false,
-			autoClose: 5000,
-			onClose: () => navigate("/inventory"),
-			});
-    } 
-	}catch (error) {
-      console.log(error);
+      } else {
+        toastId = toast.loading("Submitting new inventory...");
+        await axios.post(`${url}/api/inventories`, values);
+        successMessage = "Inventory created!";
+      }
+      if (isMounted.current) {
+        toast.update(toastId, {
+          render: successMessage,
+          type: "success",
+          isLoading: false,
+          autoClose: 5000,
+          onClose: () => navigate("/inventory"),
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -95,7 +94,7 @@ function InventoryFormPage() {
       setWarehouseList(data);
       setIsLoading(false);
     } catch (error) {
-      console.log(`Could not fetch warehouse list ${error}`);
+      console.error(`Could not fetch warehouse list ${error}`);
       setIsError(true);
     }
   }, []);
@@ -112,14 +111,14 @@ function InventoryFormPage() {
     } catch (error) {
       console.error(error);
       setIsError(true);
-      console.log(`Could not fetch inventories list ${error}`);
+      console.error(`Could not fetch inventories list ${error}`);
     }
   };
 
   useEffect(() => {
     getInventoriesList();
   }, [url]);
-  
+
   useEffect(() => {
     if (inventoryID) {
       setIsEditMode(true);
@@ -127,17 +126,18 @@ function InventoryFormPage() {
       async function fetchInventoryDetails() {
         setIsLoading(true);
         try {
-          const response = await axios.get(`${url}/api/inventories/${inventoryID}`);
-		
+          const response = await axios.get(
+            `${url}/api/inventories/${inventoryID}`
+          );
 
-         // Assuming response.data.warehouse_name is in the response
-        const warehouse = warehouseList.find(item => item.warehouse_name === response.data.warehouse_name);
+          const warehouse = warehouseList.find(
+            (item) => item.warehouse_name === response.data.warehouse_name
+          );
 
-        setValues({
-          ...response.data,
-          warehouse_id: warehouse ? warehouse.id : "", // Set warehouse_id based on warehouse_name
-        });
-
+          setValues({
+            ...response.data,
+            warehouse_id: warehouse ? warehouse.id : "",
+          });
         } catch (error) {
           console.error(`Could not fetch inventory details: ${error}`);
           toast.error("Error fetching inventory details.");
@@ -150,7 +150,6 @@ function InventoryFormPage() {
       setIsLoading(false);
     }
   }, [inventoryID, url, warehouseList]);
-
 
   return (
     <MainCard className={block}>
@@ -238,10 +237,8 @@ function InventoryFormPage() {
                   {item.warehouse_name}
                 </option>
               );
-            })}  
-
+            })}
           </Dropdown>
-
         </fieldset>
 
         <div className={`${block}__form-buttons`}>

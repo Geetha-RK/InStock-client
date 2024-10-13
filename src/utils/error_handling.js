@@ -15,8 +15,9 @@ export function handleFetchError(error, itemDescriptor, toastId = null) {
     } else if (status === 400) {
       errorStr = "Invalid input. Please check the data you've entered.";
     } else {
-      errorStr =
-        `An error occurred: ${error.response.data.message || "Unknown error"}`;
+      errorStr = `An error occurred: ${
+        error.response.data.message || "Unknown error"
+      }`;
     }
   } else if (error.request) {
     errorStr =
@@ -26,10 +27,10 @@ export function handleFetchError(error, itemDescriptor, toastId = null) {
   }
   toastId
     ? toast.update(toastId, {
-      render: errorStr,
-      type: "error",
-      isLoading: false,
-      autoClose: 5000
-    })
+        render: errorStr,
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+      })
     : toast.error(errorStr);
 }
