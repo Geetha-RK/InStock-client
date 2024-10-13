@@ -64,10 +64,8 @@ textarea, input {
 	@include -font-responsive(600, 13px, 20px, 14px, 22px);
 }
 %f-link {
-	// in case we need to make specific adjustments to this style later to match the mockups
 	@extend %f-label;
 }
 %f-button {
-	// in case we need to make specific adjustments to this style later to match the mockups
 	@extend %f-label;
 }

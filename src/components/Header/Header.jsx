@@ -2,12 +2,13 @@ import "./Header.scss";
 import logo from '../../assets/logo/InStock-Logo.svg';
 import NavLink from "../NavLink/NavLink";
 
-
 function Header() {
 
 	return (
 		<header className='header'>
+            <NavLink to='/'>
             <img className='header__logo' src={logo} alt='Website logo'/>
+            </NavLink>
             <nav className='header__navigation'>
                 <ul className='header__list'>
                     <li className='header__list-item'>

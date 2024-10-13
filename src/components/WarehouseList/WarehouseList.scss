@@ -1,236 +1,240 @@
-// @use '../../styles/partials/mixins' as *;
-// @use '../../styles/partials/variables' as *;
-// @use '../../styles/partials/breakpoints' as *;
-// @use '../../styles/partials/functions' as *;
-// @use '../../styles/partials/typography' as *;
 @use "../../styles/partials/global" as *;
 
-
 .warehouse-list {
+  &__title {
+    @extend %f-page-header;
+    margin: 0;
+  }
 
-    &__title {
-        @extend %f-page-header;
-        margin: 0;
+  &__header {
+    padding: $space-2 $space-3;
+    border-bottom: 1px solid $c-cloud;
+
+    @include tablet {
+      padding: $space-3 $space-4;
+      border: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
     }
 
-    &__header {
-        padding: $space-2 $space-3;
-        border-bottom:1px solid $c-cloud;
+    @include desktop {
+      padding:$space-3 $space-5;
+    }
+  }
 
-        @include tablet{
-            padding: $space-3 $space-3;
-            border:0;
-            display:flex;
-            justify-content: space-between;
-            align-items: baseline;
-        }
+  &__inputs {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0 1.5rem 0;
+
+    @include tablet {
+      flex-direction: row;
+      width: 60%;
+      gap: $space-2;
+    }
+  }
+
+  &__search-bar {
+    width: 100%;
+    padding: pxToRem(16);
+    border: none;
+    outline: 1.5px solid $c-cloud;
+    background-image: url(/src/assets/icons/search-24px.svg);
+    background-repeat: no-repeat;
+    background-position: 95% 50%;
+    margin-bottom: $space-2;
+
+    &--label {
+      @include screen-reader-only;
     }
 
-    &__inputs {
-        display: flex;
-        flex-direction: column;
+    @include tablet {
+      margin: 0;
+    }
+  }
 
-        @include tablet {
-            flex-direction: row;
-            width:60%;
-            gap:$space-2;
-        }
+  &__add-warehouse {
+
+    @include tablet {
+      width: pxToRem(240);
+      margin: 0;
+    }
+  }
+
+  &__label {
+    display: none;
+
+    @include tablet {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      padding: $space-2 $space-4;
+      background-color: $c-light-grey;
+    }
+    @include desktop {
+      padding: $space-2 $space-5;
+    }
+  }
+
+  &__label-list {
+    @include tablet {
+      padding: 0;
+      list-style-type: none;
+      display: flex;
+      justify-content: space-between;
+      gap: $space-5;
+      width: 100%;
+      margin: 0;
+    }
+  }
+
+  &__label-item {
+    color: $c-slate;
+    @extend %f-label;
+
+    @include tablet {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      flex: 1;
     }
 
-    &__search-bar {
-        width: 100%;
-        padding: pxToRem(16);
-        border: none;
-        outline: 1.5px solid $c-cloud;
-        background-image: url(/src/assets/icons/search-24px.svg);
-        background-repeat: no-repeat;
-        background-position: 95% 50%;
-        margin-bottom:$space-2;
-
-        &--label {
-            @include screen-reader-only;
-
-        }
-
-        @include tablet {
-            margin: 0;
-        }
+    &--actions {
+      flex: 0 0 5rem;
+      justify-content: flex-end;
     }
-
-    &__add-warehouse {
-        margin-bottom:$space-3;
-
-        @include tablet {
-            width:pxToRem(240);
-            margin: 0;
-        }
-    }
-
-    &__label {
-        display:none;
-
-        @include tablet {
-            display: flex;
-            width: 100%;
-            justify-content: space-between;
-            padding: $space-2 $space-3;
-            background-color: $c-light-grey;
-
-        }
-    }
-
-    &__label-list {
-
-        @include tablet {
-            padding: 0;
-            list-style-type: none;
-            display: flex;
-            justify-content: space-between;
-            gap: $space-5;
-            width: 100%;
-            margin: 0;
-        }
-    }
-
-    &__label-item {
-        color:$c-slate;
-        
-        @include tablet {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            width:100%;
-            flex:1;
-        }
-
-        &--actions {
-            flex: 0 0 5rem;
-            justify-content: flex-end;
-
-        }
-    }
+  }
 }
 
 .warehouse-record {
-    padding: $space-2 $space-3;
-    border-bottom:1px solid $c-cloud;
+  padding: $space-2 $space-3;
+  &:not(:last-of-type) {
+    border-bottom: 1px solid $c-cloud;
+  }
+  display: flex;
+  flex-direction: column;
+
+      @include tablet {
+        padding: $space-2 $space-4;
+        flex-direction: row;
+      }
+
+      @include desktop {
+        padding: $space-2 $space-5;
+      }
+
+  &__list {
+    padding: 0;
     display: flex;
-    flex-direction: column;
 
     @include tablet {
-        flex-direction: row;
+      flex-direction: row;
+      flex: 1;
+      gap: $space-2;
+      margin: 0;
+    }
+  }
+
+  &__sub-list {
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+
+    @include tablet {
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: 1rem;
+      margin:0;
     }
 
-    &__list {
-        padding:0;
-        display: flex;
+    @include desktop {
+      gap: 2rem;
+    }
+  }
 
-        @include tablet {
-            flex-direction: row;
-            flex: 1;
-            gap: $space-2;
-            margin:0;
-        }
+  &__list-item {
+    list-style-type: none;
+    width: 50%;
+
+    @include tablet {
+      flex: 1;
     }
 
-    &__sub-list {
-        padding:0;
-        width:100%;
-        display: flex;
-        flex-wrap:wrap;
-
-
-        @include tablet {
-            flex-direction: row;
-            justify-content: flex-start;
-            gap:1rem;
-        }
-
-        @include desktop {
-            gap:2rem;
-        }
+    &--warehouse {
+      order: 1;
     }
 
-    &__list-item {
-        list-style-type: none;
-        width: 50%;
-
-        @include tablet {
-            flex:1;
-        }
-
-        &--warehouse {
-            order:1
-        }
-
-        &--address {
-            order:3;
-
-        }
-
-        &--contact-name {
-            order:2;
-        }
-
-        &--contact-info {
-            order:4;
-
-        }
+    &--address {
+      order: 3;
     }
 
-    &__label {
-        margin:0;
-        color:$c-slate;
-        font-weight: 600;
+    &--contact-name {
+      order: 2;
+    }
 
-        @include tablet {
-            display: none;
+    &--contact-info {
+      order: 4;
+    }
+  }
+
+  &__label {
+    margin: 0;
+    color: $c-slate;
+    @extend %f-label;
+
+    @include tablet {
+      display: none;
+    }
+  }
+
+  &__info {
+    display: flex;
+    @extend %f-body-medium;
+  }
+
+  &__info-details {
+    @extend %f-body-medium;
+
+    &--link {
+      text-decoration: none;
+      color: $c-instock-indigo;
+
+      @include tablet {
+        &:hover {
+          text-decoration: underline;
         }
+      }
     }
+  }
 
-    &__info {
-        display:flex;
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+    order: 5;
+    width: 100%;
+
+    @include tablet {
+      align-items: center;
+      flex: 0 0 2.5rem;
+      justify-content: center;
     }
+  }
 
-    &__info-details {
+  &__delete {
+    width: $space-3 + pxToRem(2);
+    height: $space-3 + pxToRem(2);
 
-        &--link {
-                text-decoration: none;
-                color:$c-instock-indigo;
-
-                @include tablet {
-                    &:hover {
-                        text-decoration: underline;
-                    }
-                }
-        }
+    @include tablet {
+      margin-inline: pxToRem(16);
     }
+  }
 
-    &__actions {
-        display:flex;
-        justify-content: space-between;
-        order:5;
-        width:100%;
-
-        @include tablet {
-            align-items: center;
-            flex: 0 0 2.5rem;
-            justify-content: center;
-        }
-    }
-
-    &__delete {
-        width: $space-3 + pxToRem(2);
-        height: $space-3 + pxToRem(2);
-
-        @include tablet {
-            margin-inline:pxToRem(16);
-        }
-    }
-
-    &__edit {
-        display: block;
-        width: 1.5rem;
-        height: 1.5rem;
-    }
+  &__edit {
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 }

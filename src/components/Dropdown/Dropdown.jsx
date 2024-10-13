@@ -45,7 +45,6 @@ function Dropdown({ label, defaultValue, value, onChange, onInvalid, children, .
 
 	function handleWrapperClick() {
 		const selectEl = selectRef.current;
-		// document.createElement("select")
 		selectEl.focus();
 		selectEl.dispatchEvent(new Event("click"));
 	}

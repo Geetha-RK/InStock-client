@@ -36,7 +36,7 @@ function InventoryItemPage() {
 			} catch (error) {
 				if (!isMounted.current) { return; }
 				const badRes = error.response;
-				console.log(error, error.response);
+				console.error(error, error.response);
 				if (badRes?.status) {
 					const data = badRes.data?.message || badRes.data;
 					setError(`${badRes.status} ${badRes.statusText}${data ? `: ${data}` : ""}`);
